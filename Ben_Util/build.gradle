@@ -12,6 +12,8 @@ dependencies {
     compile(
             'org.apache.poi:poi:3.11-beta3' ,
             'org.projectlombok:lombok:1.14.4',
-            'org.springframework:spring-beans:4.1.2.RELEASE'
+            'org.springframework:spring-beans:4.1.2.RELEASE',
+            'com.google.guava:guava:18.0'
+
     )
 }
