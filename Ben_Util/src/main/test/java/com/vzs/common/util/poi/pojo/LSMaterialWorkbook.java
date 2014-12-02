@@ -7,9 +7,8 @@ import lombok.Data;
  */
 
 @Data
-public class LSMaterialTable {
-	@BWorkbook
-	String workbookName;
-	@BSheet(sheetIndex=0)
+@BWorkbook(startRow = 0,startColumn = 0)
+public class LSMaterialWorkbook {
+
 	LSMaterialSheet sheet1;
 }

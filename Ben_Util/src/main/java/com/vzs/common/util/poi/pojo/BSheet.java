@@ -11,7 +11,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * Created by ben.yao on 12/1/2014.
  */
 @Retention(RUNTIME)
-@Target({FIELD})
+@Target({TYPE})
 public @interface BSheet {
 	String name() default "";
 	int sheetIndex();

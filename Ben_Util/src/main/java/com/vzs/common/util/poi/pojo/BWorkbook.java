@@ -10,6 +10,8 @@ import static java.lang.annotation.ElementType.*;
  * Created by ben.yao on 12/1/2014.
  */
 @Retention(RUNTIME)
-@Target({FIELD})
+@Target({TYPE})
 public @interface BWorkbook {
+	int startRow() default 0;
+	int startColumn() default 0;
 }
