@@ -7,7 +7,7 @@ import lombok.Data;
  */
 
 @Data
-@BWorkbook(startRow = 0,startColumn = 0)
+@BWorkbook
 public class LSMaterialWorkbook {
 
 	LSMaterialSheet sheet1;

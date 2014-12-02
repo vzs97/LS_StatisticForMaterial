@@ -13,6 +13,8 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Retention(RUNTIME)
 @Target({TYPE})
 public @interface BSheet {
+	int startRow() default 0;
+	int startColumn() default 0;
 	String name() default "";
 	int sheetIndex();
 

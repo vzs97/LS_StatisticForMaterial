@@ -12,6 +12,5 @@ import static java.lang.annotation.ElementType.*;
 @Retention(RUNTIME)
 @Target({TYPE})
 public @interface BWorkbook {
-	int startRow() default 0;
-	int startColumn() default 0;
+
 }
