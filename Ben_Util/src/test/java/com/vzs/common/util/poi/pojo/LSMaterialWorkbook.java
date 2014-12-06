@@ -11,5 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @BWorkbook
 public class LSMaterialWorkbook {
-	LSMaterialSheet sheet1;
+	@BSheet(sheetIndex = 0,startRow = 2)
+	LSMaterialSheet lsMaterialSheet;
 }

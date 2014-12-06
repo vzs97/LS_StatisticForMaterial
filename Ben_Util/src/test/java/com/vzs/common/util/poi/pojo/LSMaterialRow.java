@@ -5,11 +5,10 @@ import lombok.Data;
 /**
  * Created by ben.yao on 12/2/2014.
  */
-@BRow
 @Data
 public class LSMaterialRow {
-	@BCell(column = "A" , types = BCell.TYPES.STRING)
-	String no;
+	@BCell(column = "A" , types = BCell.TYPES.INTEGER)
+	Integer no;
 	@BCell(column = "B" , types = BCell.TYPES.STRING)
 	String classification;
 	@BCell(column = "C" , types = BCell.TYPES.STRING)
@@ -22,4 +21,5 @@ public class LSMaterialRow {
 	boolean isReviewByMonth;
 	@BCell(column = "G" , types = BCell.TYPES.PERCENT)
 	Double targetValue;
+
 }

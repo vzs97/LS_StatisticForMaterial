@@ -1,3 +1,5 @@
 rootProject.name = 'LS_StatisticForMaterial'
 include "Ben_Util"
 
+include 'LS_Application'
+

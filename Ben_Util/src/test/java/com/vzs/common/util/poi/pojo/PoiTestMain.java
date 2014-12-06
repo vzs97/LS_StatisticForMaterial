@@ -7,10 +7,10 @@ import com.vzs.common.util.poi.reader.BPoiReaderTemplate;
  */
 public class PoiTestMain {
     public static void main(String... args){
-        String xlsPath="D:\\LS_MaterialStatistic\\COS追踪工具制作\\COS追踪工具制作\\物料维护表.xlsx";
+        String xlsPath="D:\\Ben\\personal\\COS追踪工具制作\\物料维护表.xlsx";
         BPoiReaderTemplate<LSMaterialWorkbook> bPoiReaderTemplate = new BPoiReaderTemplate<LSMaterialWorkbook>(xlsPath,LSMaterialWorkbook.class);
         bPoiReaderTemplate.execute();
-
-
+        LSMaterialWorkbook lsMaterialWorkbook = bPoiReaderTemplate.getBWorkbook();
+        System.out.println(lsMaterialWorkbook);
     }
 }

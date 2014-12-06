@@ -1,8 +1,16 @@
 package com.vzs.common.util.poi.pojo;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
 /**
  * Created by ben.yao on 12/2/2014.
  */
+@Retention(RUNTIME)
+@Target({FIELD})
 public @interface BCell {
 	String column() default "";
 	int row() default -1;
@@ -10,6 +18,6 @@ public @interface BCell {
 	String description() default "";
 
 	public static enum TYPES{
-		STRING,DATE,DOUBLE,INTEGER,BOOLEAN,PERCENT
+		STRING,DATE,NUMERIC,INTEGER,BOOLEAN,PERCENT
 	}
 }

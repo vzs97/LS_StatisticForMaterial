@@ -2,6 +2,8 @@ package com.vzs.common.util.poi.reader;
 
 import com.vzs.common.util.poi.pojo.BSheet;
 import com.vzs.common.util.poi.pojo.BWorkbook;
+import lombok.Getter;
+import utils.BAnnotationHelper;
 import utils.BReflectHelper;
 
 import java.lang.reflect.Field;
@@ -11,14 +13,13 @@ import java.lang.reflect.Field;
  */
 public class BPoiReaderTemplate<T> {
     String filePath;
-    T bWorkbook;
+    @Getter
+    private T bWorkbook;
     PoiReader poiReader;
     public BPoiReaderTemplate(String filePath, Class clazz){
         this.filePath = filePath;
         this.bWorkbook = BReflectHelper.newInstance(clazz);
-        if(!bWorkbook.getClass().isAnnotationPresent(BWorkbook.class)){
-            throw new IllegalArgumentException("Haven't pass a BWorkbook annotation class");
-        }
+        BAnnotationHelper.isAnnotationPresent(bWorkbook.getClass(),BWorkbook.class,"Haven't pass a BWorkbook annotation class");
     }
     public void execute(){
         if(filePath.endsWith(".xlsx")){
@@ -32,11 +33,11 @@ public class BPoiReaderTemplate<T> {
     }
 
     private void readSheet(Field field){
-        Object sheet = BReflectHelper.newInstance(field.getClass());
-        BSheet bSheet = sheet.getClass().getAnnotation(BSheet.class);
-
-
-
+        BSheet bSheet = field.getAnnotation(BSheet.class);
+        poiReader.prepareSheet(bSheet);
+        Object sheet = poiReader.readSheet(field.getType());
+        BReflectHelper.setValues(bWorkbook, field, sheet);
     }
+
 
 }

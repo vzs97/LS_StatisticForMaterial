@@ -11,11 +11,10 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * Created by ben.yao on 12/1/2014.
  */
 @Retention(RUNTIME)
-@Target({TYPE})
+@Target({FIELD})
 public @interface BSheet {
 	int startRow() default 0;
-	int startColumn() default 0;
-	String name() default "";
-	int sheetIndex();
+	String sheetName() default "";
+	int sheetIndex() default -1;
 
 }
