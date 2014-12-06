@@ -16,6 +16,7 @@ public @interface BCell {
 	int row() default -1;
 	TYPES types();
 	boolean isStop() default false;
+	boolean isSkipWhenEmpty() default false;
 	String description() default "";
 
 	public static enum TYPES{

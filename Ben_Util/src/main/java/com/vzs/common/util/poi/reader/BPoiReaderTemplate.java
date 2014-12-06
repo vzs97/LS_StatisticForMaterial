@@ -32,6 +32,7 @@ public class BPoiReaderTemplate<T> {
                 readSheet(field);
             }
         }
+        poiReader.close();
     }
 
     private void readSheet(Field field){

@@ -26,11 +26,7 @@ public class BReflectHelper {
         try {
             Method setMethod = obj.getClass().getMethod(setMethodName, new Class[] { field.getType() });
             setMethod.invoke(obj,values);
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

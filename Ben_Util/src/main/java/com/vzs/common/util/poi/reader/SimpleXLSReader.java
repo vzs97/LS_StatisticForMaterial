@@ -40,6 +40,10 @@ public class SimpleXLSReader extends AbstractPoiReader{
 	}
 
 	private Object getCellValue(HSSFCell cell){
+		if(cell == null){
+			return null;
+		}
+
 		try {
 			int cellType = cell.getCellType();
 			switch (cellType) {

@@ -81,6 +81,7 @@ public abstract class AbstractPoiReader implements PoiReader{
     protected abstract boolean nextRow();
     protected abstract Object readCellValue(BCell bCell);
 
+
     protected  <T> List<T> readRow(Class<T> clazz){
         List<T> rows = Lists.newArrayList();
         startRow();
@@ -93,11 +94,16 @@ public abstract class AbstractPoiReader implements PoiReader{
                     Object value = readCellValue(bCell);
                     if(bCell.isStop() && StringUtils.isEmpty(value)){
                         return rows;
+                    }else if(bCell.isSkipWhenEmpty() && StringUtils.isEmpty(value)){
+                        rowObj = null;
+                        break;
                     }
                     BReflectHelper.setValues(rowObj, field, value);
                 }
             }
-            rows.add(rowObj);
+            if(rowObj != null) {
+                rows.add(rowObj);
+            }
         }
         return rows;
     }

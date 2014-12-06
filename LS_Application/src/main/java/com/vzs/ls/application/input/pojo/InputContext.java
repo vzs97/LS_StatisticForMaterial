@@ -13,7 +13,12 @@ public class InputContext {
 		this.mainPath=mainPath;
 		materialMaintian = mainPath + materialMaintian;
 		inventoryRecipTransfer = mainPath + inventoryRecipTransfer;
+		dishesSaleStatistic = mainPath + dishesSaleStatistic;
+		//TODO: need change
+		weeklyInventory = mainPath + weeklyInventory;
 	}
 	String materialMaintian = "物料维护表.xlsx";
 	String inventoryRecipTransfer="盘点与配方单位转换表.xls";
+	String dishesSaleStatistic="菜品销售统计表.xls";
+	String weeklyInventory="周盘点表PIIT76227001201410.xls";
 }
