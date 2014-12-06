@@ -56,19 +56,24 @@ public abstract class AbstractPoiReader implements PoiReader{
         if(value == null){
             return null;
         }
-        switch (bCell.types()) {
-            case STRING:
-                return BStringUtils.toString(value);
-            case DATE:
-                return value;
-            case INTEGER:
-                return new Double(value.toString()).intValue();
-            case NUMERIC:
-                return Double.parseDouble(value.toString());
-            case BOOLEAN:
-                return BStringUtils.toBoolean(value);
-            case PERCENT:
-                return value;
+        try {
+            switch (bCell.types()) {
+                case STRING:
+                    return BStringUtils.toString(value);
+                case DATE:
+                    return value;
+                case INTEGER:
+                    return new Double(value.toString()).intValue();
+                case NUMERIC:
+                    return Double.parseDouble(value.toString());
+                case BOOLEAN:
+                    return BStringUtils.toBoolean(value);
+                case PERCENT:
+                    return value;
+            }
+        }catch (Exception e){
+            System.out.println("Can't format cell [" + currentRowNumber +":" + bCell.column() +"]") ;
+            e.printStackTrace();
         }
         return null;
 
@@ -86,6 +91,9 @@ public abstract class AbstractPoiReader implements PoiReader{
                 BCell bCell = field.getAnnotation(BCell.class);
                 if (bCell != null) {
                     Object value = readCellValue(bCell);
+                    if(bCell.isStop() && StringUtils.isEmpty(value)){
+                        return rows;
+                    }
                     BReflectHelper.setValues(rowObj, field, value);
                 }
             }

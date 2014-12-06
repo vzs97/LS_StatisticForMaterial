@@ -7,6 +7,9 @@ repositories {
     mavenCentral()
 }
 
+
+
 dependencies {
+    compile project (':Ben_Util')
     testCompile group: 'junit', name: 'junit', version: '4.11'
 }

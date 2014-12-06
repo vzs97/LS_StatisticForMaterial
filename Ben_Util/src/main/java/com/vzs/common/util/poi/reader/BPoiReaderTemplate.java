@@ -24,10 +24,12 @@ public class BPoiReaderTemplate<T> {
     public void execute(){
         if(filePath.endsWith(".xlsx")){
             poiReader = new SimpleXLSXReader(filePath);
-            for (Field field : bWorkbook.getClass().getDeclaredFields()) {
-                if(field.isAnnotationPresent(BSheet.class)){
-                    readSheet(field);
-                }
+        }else if(filePath.endsWith(".xls")){
+            poiReader = new SimpleXLSReader(filePath);
+        }
+        for (Field field : bWorkbook.getClass().getDeclaredFields()) {
+            if(field.isAnnotationPresent(BSheet.class)){
+                readSheet(field);
             }
         }
     }

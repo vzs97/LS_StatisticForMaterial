@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@BWorkbook
+@BWorkbook(description = "物料维护表.xlsx")
 public class LSMaterialWorkbook {
 	@BSheet(sheetIndex = 0,startRow = 2)
 	LSMaterialSheet lsMaterialSheet;
