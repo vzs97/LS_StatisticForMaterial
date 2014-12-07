@@ -43,6 +43,10 @@ public class SingleRestaurantExecutorImpl {
 		initInventory(singleResturuantRowList);
 	}
 
+	/**
+	 * init Inventory Unit Cell
+	 * @param singleResturuantRowList
+	 */
 	private void initInventory(List<SingleRestaurantRow> singleResturuantRowList){
 		for (SingleRestaurantRow singleRestaurantRow : singleResturuantRowList) {
 			String materialNo = singleRestaurantRow.getMaterialNo();
