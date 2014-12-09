@@ -27,16 +27,18 @@ public class SimpleXLSXReader extends AbstractPoiReader{
 
 
     @Override protected boolean nextRow() {
-        if(currentRowNumber == null){
-            currentRowNumber = bSheet.startRow();
-        }else{
-            currentRowNumber ++;
-        }
-        int lastrowNum = currentSheet.getLastRowNum();
-        if(currentRowNumber > lastrowNum){
-            return false;
-        }
-        currnetRow = currentSheet.getRow(currentRowNumber);
+        do {
+            if (currentRowNumber == null) {
+                currentRowNumber = bSheet.startRow();
+            } else {
+                currentRowNumber++;
+            }
+            int lastrowNum = currentSheet.getLastRowNum();
+            if (currentRowNumber > lastrowNum) {
+                return false;
+            }
+            currnetRow = currentSheet.getRow(currentRowNumber);
+        }while(currnetRow == null) ;
         return true;
     }
 
@@ -68,6 +70,9 @@ public class SimpleXLSXReader extends AbstractPoiReader{
 
     @Override protected Object readCellValue(BCell bCell) {
         XSSFCell cell = currnetRow.getCell(ToIndex(bCell.column()));
+        if(cell == null){
+            return null;
+        }
         Object cellValue = getCellValue(cell);
         return formatValue(bCell, cellValue);
     }

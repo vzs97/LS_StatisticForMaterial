@@ -56,6 +56,7 @@ public abstract class AbstractPoiReader implements PoiReader{
         if(value == null){
             return null;
         }
+        String strValue = value.toString();
         try {
             switch (bCell.types()) {
                 case STRING:
@@ -63,8 +64,14 @@ public abstract class AbstractPoiReader implements PoiReader{
                 case DATE:
                     return value;
                 case INTEGER:
+                    if(StringUtils.isEmpty(strValue)){
+                        return null;
+                    }
                     return new Double(value.toString()).intValue();
                 case NUMERIC:
+                    if(StringUtils.isEmpty(strValue)){
+                        return null;
+                    }
                     return Double.parseDouble(value.toString());
                 case BOOLEAN:
                     return BStringUtils.toBoolean(value);

@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @BWorkbook(description = "物料维护表.xlsx")
 public class MaterialMaintainWorkbook {
-	@BSheet(sheetIndex = 0,startRow = 2)
+	@BSheet(sheetIndex = 0,startRow = 6)
 	MaterialSheet materialSheet;
 }

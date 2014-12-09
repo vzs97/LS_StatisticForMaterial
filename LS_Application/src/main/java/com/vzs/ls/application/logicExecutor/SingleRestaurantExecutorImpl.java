@@ -6,6 +6,7 @@ import com.vzs.ls.application.input.pojo.DishesSellerStatistic.DishesSellerStati
 import com.vzs.ls.application.input.pojo.InputContext;
 import com.vzs.ls.application.input.pojo.InventoryRecipeTransfer.InventoryRecipeTransferRow;
 import com.vzs.ls.application.input.pojo.InventoryRecipeTransfer.InventoryRecipeTransferWorkbook;
+import com.vzs.ls.application.input.pojo.LSRecipe.LSRecipeWorkbook;
 import com.vzs.ls.application.input.pojo.MaterialMaintain.MaterialMaintainWorkbook;
 import com.vzs.ls.application.input.pojo.MaterialMaintain.MaterialRow;
 import com.vzs.ls.application.input.pojo.WeeklyInventory.WeeklyInventoryWorkbook;
@@ -22,6 +23,7 @@ public class SingleRestaurantExecutorImpl {
 	InputContext inputContext;
 	MaterialMaintainWorkbook materialMaintainWorkbook;
 	InventoryRecipeTransferWorkbook inventoryRecipeTransferWorkbook;
+	LSRecipeWorkbook lsRecipeWorkbook;
 
 	public SingleRestaurantExecutorImpl(InputContext inputContext){
 		this.inputContext=inputContext;
@@ -78,9 +80,12 @@ public class SingleRestaurantExecutorImpl {
 	 * init load once xls
 	 */
 	private void init() {
-		materialMaintainWorkbook =  inputDao.getWorkbook(inputContext.getWeeklyInventory(), MaterialMaintainWorkbook.class);
-		inventoryRecipeTransferWorkbook = inputDao.getWorkbook(inputContext.getWeeklyInventory(), InventoryRecipeTransferWorkbook.class);
+		materialMaintainWorkbook =  inputDao.getWorkbook(inputContext.getMaterialMaintian(), MaterialMaintainWorkbook.class);
+		inventoryRecipeTransferWorkbook = inputDao.getWorkbook(inputContext.getInventoryRecipTransfer(), InventoryRecipeTransferWorkbook.class);
 		inventoryRecipeTransferWorkbook.init();
+		lsRecipeWorkbook = inputDao.getWorkbook(inputContext.getRecipe(), LSRecipeWorkbook.class);
+		lsRecipeWorkbook.init();
+		System.out.println(lsRecipeWorkbook.getExceptPotRecipe());
 	}
 
 }
