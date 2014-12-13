@@ -8,7 +8,7 @@ import com.vzs.ls.application.logicExecutor.SingleRestaurantExecutorImpl;
  */
 public class UIMain {
 	public static void main(String... args){
-		SingleRestaurantExecutorImpl executor = new SingleRestaurantExecutorImpl(new InputContext("D:\\Ben\\personal\\COS追踪工具制作\\"));
+		SingleRestaurantExecutorImpl executor = new SingleRestaurantExecutorImpl(new InputContext("/users/byao/Ben/personal/YUM/COS追踪工具制作/"));
 		executor.execute();
 	}
 }
