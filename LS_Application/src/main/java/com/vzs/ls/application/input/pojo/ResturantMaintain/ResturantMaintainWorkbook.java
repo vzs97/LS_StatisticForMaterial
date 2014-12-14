@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @BWorkbook(description = "餐厅信息维护表.xlsx")
 public class ResturantMaintainWorkbook {
-    @BSheet(sheetIndex = 0,startRow = 2)
+    @BSheet(sheetName = "餐厅架构信息",startRow = 2)
     ResturantMaintainSheet resturantMaintainSheet;
 }

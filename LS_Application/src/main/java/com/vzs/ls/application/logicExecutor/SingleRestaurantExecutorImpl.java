@@ -20,6 +20,7 @@ import lombok.NoArgsConstructor;
 import utils.BReflectHelper;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.util.List;
 import java.util.Map;
 
@@ -45,11 +46,23 @@ public class SingleRestaurantExecutorImpl {
 		init();
         for (ResturantMaintainRow resturantMaintainRow : resturantMaintainWorkbook.getResturantMaintainSheet().getResturantMaintainRowList()) {
             List<SingleRestaurantRow> singleResturuantRowList = materialMaintainTableInit();
+            DishesSellerStatisticWorkbook dishesSellerStatisticWorkbook =getResturantNameToWorkbook().get(resturantMaintainRow.getResturantName());
+            if(dishesSellerStatisticWorkbook == null){
+                System.out.println("找不到对应的菜品销售表:"+resturantMaintainRow.getResturantName() +":无视该餐厅");
+                continue;
+            }
             initInventory(singleResturuantRowList);
-            loopSingleResturantRow(singleResturuantRowList,new TheoryCousumptionCall(this,resturantMaintainRow));
+            loopSingleResturantRow(singleResturuantRowList, new TheoryCousumptionCall(this, resturantMaintainRow));
+            loopSingleResturantRow(singleResturuantRowList, new RealConsumptionCall(this, resturantMaintainRow));
+            loopSingleResturantRow(singleResturuantRowList, new DiffCall());
+            loopSingleResturantRow(singleResturuantRowList, new DiffMoneyCall(this, resturantMaintainRow));
+            loopSingleResturantRow(singleResturuantRowList,new GetRateCall());
+            System.out.println(singleResturuantRowList);
+
         }
-        ;
+
 	}
+
 
     private void loopSingleResturantRow(List<SingleRestaurantRow> singleResturuantRowList,SingleRestaurantRowCall call){
         for (SingleRestaurantRow singleRestaurantRow : singleResturuantRowList) {
@@ -106,9 +119,21 @@ public class SingleRestaurantExecutorImpl {
         if(!directory.isDirectory()){
             return;
         }
-        for (File file : directory.listFiles()) {
+        FileFilter fileFilter = new FileFilter(){
+
+            @Override
+            public boolean accept(File file) {
+                if(file.isFile() && (file.getName().endsWith("xls") || file.getName().endsWith("xlsx")) && !file.getName().startsWith("~$")){
+                    return true;
+                }
+                return false;
+            }
+        };
+        for (File file : directory.listFiles(fileFilter)) {
             String fileName = file.getName();
+
             String restruantName = NormalUtil.extractResturantName(fileName);
+//            System.out.println(fileName);
             DishesSellerStatisticWorkbook dishesSellerStatisticWorkbook = inputDao.getWorkbook(file.getAbsolutePath(),DishesSellerStatisticWorkbook.class);
             dishesSellerStatisticWorkbook.getDishesSellerStatisticSheet().initDishesMap();
             resturantNameToWorkbook.put(restruantName,dishesSellerStatisticWorkbook);

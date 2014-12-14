@@ -5,6 +5,7 @@ import com.vzs.ls.application.output.pojo.SingleRestaruant.SingleRestaurantRow;
 /**
  * Created by byao on 12/13/14.
  */
-public interface SingleRestaurantRowCall {
-    public void call(SingleRestaurantRow singleRestaurantRow);
+public abstract class SingleRestaurantRowCall {
+
+    public abstract void call(SingleRestaurantRow singleRestaurantRow);
 }
