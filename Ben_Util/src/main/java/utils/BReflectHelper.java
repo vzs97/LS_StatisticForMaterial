@@ -29,6 +29,5 @@ public class BReflectHelper {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 }
