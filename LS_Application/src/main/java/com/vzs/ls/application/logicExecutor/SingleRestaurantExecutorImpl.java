@@ -14,6 +14,8 @@ import com.vzs.ls.application.input.pojo.ResturantMaintain.ResturantMaintainRow;
 import com.vzs.ls.application.input.pojo.ResturantMaintain.ResturantMaintainWorkbook;
 import com.vzs.ls.application.input.pojo.WeeklyInventory.WeeklyInventoryWorkbook;
 import com.vzs.ls.application.output.pojo.SingleRestaruant.SingleRestaurantRow;
+import com.vzs.ls.application.output.pojo.SingleRestaruant.SingleRestaurantSheet;
+import com.vzs.ls.application.output.pojo.SingleRestaruant.SingleRestaurantWookbook;
 import com.vzs.ls.application.utils.NormalUtil;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -57,6 +59,13 @@ public class SingleRestaurantExecutorImpl {
             loopSingleResturantRow(singleResturuantRowList, new DiffCall());
             loopSingleResturantRow(singleResturuantRowList, new DiffMoneyCall(this, resturantMaintainRow));
             loopSingleResturantRow(singleResturuantRowList,new GetRateCall());
+
+
+            SingleRestaurantWookbook singleRestaurantWookbook = new SingleRestaurantWookbook();
+            SingleRestaurantSheet singleRestaurantSheet = new SingleRestaurantSheet();
+            singleRestaurantSheet.setSingleRestaurantRowList(singleResturuantRowList);
+            singleRestaurantWookbook.setSingleRestaurantSheet(singleRestaurantSheet);
+            inputDao.writeWorkbook(inputContext.getSingleRestuarntFolder(),resturantMaintainRow.getResturantName()+".xls",null,singleRestaurantWookbook);
             System.out.println(singleResturuantRowList);
 
         }

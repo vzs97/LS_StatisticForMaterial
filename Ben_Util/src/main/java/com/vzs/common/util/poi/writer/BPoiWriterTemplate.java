@@ -20,9 +20,9 @@ public class BPoiWriterTemplate<T> {
     String templatePath;
     private PoiWriter poiWriter;
 
-    public BPoiWriterTemplate(String filePath, Class clazz){
+    public BPoiWriterTemplate(String filePath, T bWorkbook){
         this.filePath = filePath;
-        this.bWorkbook = BReflectHelper.newInstance(clazz);
+        this.bWorkbook = bWorkbook;
         BAnnotationHelper.isAnnotationPresent(bWorkbook.getClass(), BWorkbook.class, "Haven't pass a BWorkbook annotation class");
     }
     public void execute(){
@@ -37,12 +37,14 @@ public class BPoiWriterTemplate<T> {
                 write(field);
             }
         }
+        poiWriter.writeWorkbook();
     }
 
     private void write(Field field) {
         BSheet bSheet = field.getAnnotation(BSheet.class);
         poiWriter.prepareSheet(bSheet);
-        poiWriter.writeSheet(field);
+        Object sheetInstance = BReflectHelper.getValue(bWorkbook,field);
+        poiWriter.writeSheet(sheetInstance);
 
     }
 }

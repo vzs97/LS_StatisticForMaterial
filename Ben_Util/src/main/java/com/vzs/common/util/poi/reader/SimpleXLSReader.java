@@ -7,6 +7,7 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.util.StringUtils;
+import utils.BWorkbookUtil;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -70,7 +71,7 @@ public class SimpleXLSReader extends AbstractPoiReader{
 	}
 
 	@Override protected Object readCellValue(BCell bCell) {
-		HSSFCell cell = currnetRow.getCell(ToIndex(bCell.column()));
+		HSSFCell cell = currnetRow.getCell(BWorkbookUtil.ToIndex(bCell.column()));
 		Object cellValue = getCellValue(cell);
 		return formatValue(bCell, cellValue);
 	}

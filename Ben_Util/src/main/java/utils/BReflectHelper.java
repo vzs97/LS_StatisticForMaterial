@@ -30,4 +30,21 @@ public class BReflectHelper {
             e.printStackTrace();
         }
     }
+
+    public static Object getValue(Object obj,Field field){
+        String fieldName = field.getName();
+        String getMethodName="get"+fieldName.substring(0,1).toUpperCase()+fieldName.substring(1);
+        try {
+            Method getMethod=obj.getClass().getMethod(getMethodName, new Class[]{});
+            return getMethod.invoke(obj,new Object[]{});
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return null;
+
+    }
 }

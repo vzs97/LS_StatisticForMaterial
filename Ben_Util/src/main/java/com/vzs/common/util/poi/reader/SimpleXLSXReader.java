@@ -8,6 +8,7 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.util.StringUtils;
 import utils.BStringUtils;
+import utils.BWorkbookUtil;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -69,7 +70,7 @@ public class SimpleXLSXReader extends AbstractPoiReader{
     }
 
     @Override protected Object readCellValue(BCell bCell) {
-        XSSFCell cell = currnetRow.getCell(ToIndex(bCell.column()));
+        XSSFCell cell = currnetRow.getCell(BWorkbookUtil.ToIndex(bCell.column()));
         if(cell == null){
             return null;
         }

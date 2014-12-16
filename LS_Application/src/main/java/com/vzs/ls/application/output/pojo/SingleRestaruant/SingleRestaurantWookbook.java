@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @BWorkbook
 public class SingleRestaurantWookbook {
-	@BSheet(sheetIndex = 0,sheetName = "单店报告", startRow = 3)
+	@BSheet(sheetName = "单店报告", startRow = 3)
 	SingleRestaurantSheet singleRestaurantSheet;
 
 }
