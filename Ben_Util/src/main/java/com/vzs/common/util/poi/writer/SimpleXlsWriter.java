@@ -3,10 +3,7 @@ package com.vzs.common.util.poi.writer;
 import com.vzs.common.util.poi.pojo.BCell;
 import com.vzs.common.util.poi.pojo.BSheet;
 import lombok.AllArgsConstructor;
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.usermodel.*;
 import org.springframework.util.StringUtils;
 import utils.BWorkbookUtil;
 
@@ -69,8 +66,15 @@ public class SimpleXlsWriter extends PoiWriter{
 
     }
 
+    protected HSSFCellStyle getStyle(Field field){
+        HSSFCellStyle style = null;
+
+        return style;
+    }
+
     @Override
-    protected void writeCell(Object cellInstance, BCell bCell) {
+    protected void writeCell(Object cellInstance, Field field) {
+        BCell bCell = field.getAnnotation(BCell.class);
         int columnIndex = BWorkbookUtil.ToIndex(bCell.column());
         HSSFCell cell = currentRow.getCell(columnIndex);
         if(cell == null){

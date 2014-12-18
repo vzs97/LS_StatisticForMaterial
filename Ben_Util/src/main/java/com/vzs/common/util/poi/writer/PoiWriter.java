@@ -47,8 +47,6 @@ public abstract class PoiWriter {
             writeSingleRow(rowInstance);
             currentRowIndex++ ;
         }
-   
-
     }
 
     protected abstract void prepareCurrentRow();
@@ -58,12 +56,12 @@ public abstract class PoiWriter {
             BCell bCell = field.getAnnotation(BCell.class);
             if(bCell != null){
                 Object cellInstance = BReflectHelper.getValue(rowInstance,field);
-                writeCell(cellInstance,bCell);
+                writeCell(cellInstance,field);
             }
         }
         
     }
-    protected abstract void writeCell(Object cellInstance, BCell bcell);
+    protected abstract void writeCell(Object cellInstance, Field field);
 
     public abstract void writeWorkbook();
 }
