@@ -1,10 +1,12 @@
 package com.vzs.common.util.poi.writer;
 
-import com.vzs.common.util.poi.pojo.BCell;
-import com.vzs.common.util.poi.pojo.BSheet;
+import com.google.common.collect.Maps;
+import com.vzs.common.util.poi.pojo.*;
 import lombok.AllArgsConstructor;
 import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.hssf.util.HSSFColor;
 import org.springframework.util.StringUtils;
+import utils.BReflectHelper;
 import utils.BWorkbookUtil;
 
 import java.io.FileInputStream;
@@ -13,6 +15,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Date;
+import java.util.Map;
 
 /**
  * Created by byao on 12/15/14.
@@ -66,14 +69,59 @@ public class SimpleXlsWriter extends PoiWriter{
 
     }
 
-    protected HSSFCellStyle getStyle(Field field){
-        HSSFCellStyle style = null;
+    protected HSSFCellStyle getStyle(Object rowInstance,Field field){
+
+        BCell bCell = field.getAnnotation(BCell.class);
+        BCell.TYPES types = bCell.types();
+        BColors bColor = null;
+
+        BStyle bStyle = field.getAnnotation(BStyle.class);
+        if(bStyle != null){
+            Object sytleHanld = BReflectHelper.newInstance(bStyle.styleHanlde());
+            if(sytleHanld instanceof BStyleAbstract){
+                BStyleAbstract bStyleAbstract = (BStyleAbstract)sytleHanld;
+                if(bStyle.method().equals(BStyleMethod.COLOR)){
+                    Object currentValue = BReflectHelper.getValue(rowInstance,field);
+                    String referenceObj = bStyle.refereceObj();
+                    Object refereceValue=BReflectHelper.getValue(rowInstance,referenceObj);
+                    bColor = bStyleAbstract.getColor(currentValue,refereceValue);
+
+                }
+            }
+        }
+
+        String styleKey=sytleKey(types,bColor);
+        HSSFCellStyle style = styleCache.get(styleKey);
+        if(style == null){
+            style = hssfWorkbook.createCellStyle();
+            if(BColors.RED.equals(bColor)) {
+                style.setFillForegroundColor(HSSFColor.RED.index);
+                style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+            }
+            if(BCell.TYPES.PERCENT.equals(types)){
+                style.setDataFormat(HSSFDataFormat.getBuiltinFormat("0.00%"));
+            }
+
+            styleCache.put(styleKey,style);
+        }
 
         return style;
     }
 
+    Map<String,HSSFCellStyle> styleCache = Maps.newHashMap();
+
+    private String sytleKey(Object... objs){
+        StringBuilder sb = new StringBuilder();
+        for(Object obj : objs){
+            sb.append(obj).append("@");
+        }
+        return sb.toString();
+    }
+
     @Override
-    protected void writeCell(Object cellInstance, Field field) {
+    protected void writeCell(Object rowInstance, Field field) {
+        Object cellInstance = BReflectHelper.getValue(rowInstance,field);
+
         BCell bCell = field.getAnnotation(BCell.class);
         int columnIndex = BWorkbookUtil.ToIndex(bCell.column());
         HSSFCell cell = currentRow.getCell(columnIndex);
@@ -89,6 +137,12 @@ public class SimpleXlsWriter extends PoiWriter{
         }else if(cellInstance instanceof Boolean){
             cell.setCellValue((Boolean)cellInstance);
         }
+
+        HSSFCellStyle style = getStyle(rowInstance, field);
+        if(style != null){
+            cell.setCellStyle(style);
+        }
+
 
     }
 

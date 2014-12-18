@@ -33,6 +33,10 @@ public class BReflectHelper {
 
     public static Object getValue(Object obj,Field field){
         String fieldName = field.getName();
+        return getValue(obj,fieldName);
+
+    }
+    public static Object getValue(Object obj,String fieldName){
         String getMethodName="get"+fieldName.substring(0,1).toUpperCase()+fieldName.substring(1);
         try {
             Method getMethod=obj.getClass().getMethod(getMethodName, new Class[]{});

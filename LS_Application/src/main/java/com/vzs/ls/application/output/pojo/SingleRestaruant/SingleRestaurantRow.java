@@ -1,6 +1,8 @@
 package com.vzs.ls.application.output.pojo.SingleRestaruant;
 
 import com.vzs.common.util.poi.pojo.BCell;
+import com.vzs.common.util.poi.pojo.BStyle;
+import com.vzs.common.util.poi.pojo.BStyleMethod;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -26,8 +28,9 @@ public class SingleRestaurantRow {
 	Double diff;
 	@BCell(column = "H" , types = BCell.TYPES.NUMERIC, description = "差异金额")
 	Double diffCount;
-	@BCell(column = "I" , types = BCell.TYPES.NUMERIC, description = "得率")
+	@BCell(column = "I" , types = BCell.TYPES.PERCENT, description = "得率")
+    @BStyle(styleHanlde = RateStyle.class, method = BStyleMethod.COLOR, refereceObj = "targetValue")
 	Double rate;
-	@BCell(column = "J" , types = BCell.TYPES.NUMERIC, description = "目标值")
+	@BCell(column = "J" , types = BCell.TYPES.PERCENT, description = "目标值")
 	Double targetValue;
 }

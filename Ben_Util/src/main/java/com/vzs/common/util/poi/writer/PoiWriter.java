@@ -55,13 +55,13 @@ public abstract class PoiWriter {
         for (Field field : rowInstance.getClass().getDeclaredFields()) {
             BCell bCell = field.getAnnotation(BCell.class);
             if(bCell != null){
-                Object cellInstance = BReflectHelper.getValue(rowInstance,field);
-                writeCell(cellInstance,field);
+
+                writeCell(rowInstance,field);
             }
         }
         
     }
-    protected abstract void writeCell(Object cellInstance, Field field);
+    protected abstract void writeCell(Object rowInstance, Field field);
 
     public abstract void writeWorkbook();
 }
