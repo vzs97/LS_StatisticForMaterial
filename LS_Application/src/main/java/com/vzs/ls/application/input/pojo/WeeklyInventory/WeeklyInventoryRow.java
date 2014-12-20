@@ -14,6 +14,8 @@ public class WeeklyInventoryRow {
 	String name;
 	@BCell(column = "E" , types = BCell.TYPES.STRING, description = "单位")
 	String unit;
-	@BCell(column = "V" , types = BCell.TYPES.INTEGER, description = "本月使用    ")
+    @BCell(column = "G" , types = BCell.TYPES.NUMERIC, description = "参考价值")
+    Double unitPrice;
+	@BCell(column = "V" , types = BCell.TYPES.NUMERIC, description = "本月使用    ")
 	Double monthlySale;
 }

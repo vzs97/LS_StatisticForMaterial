@@ -9,7 +9,7 @@ public class DiffCall extends SingleRestaurantRowCall {
     @Override
     public void call(SingleRestaurantRow singleRestaurantRow) {
         if(singleRestaurantRow.getTheoryCousumption() != null && singleRestaurantRow.getActualyCoumption() != null) {
-            singleRestaurantRow.setDiff(singleRestaurantRow.getTheoryCousumption() - singleRestaurantRow.getActualyCoumption());
+            singleRestaurantRow.setDiff(singleRestaurantRow.getActualyCoumption() - singleRestaurantRow.getTheoryCousumption());
         }
     }
 }

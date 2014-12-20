@@ -23,13 +23,17 @@ public class InputContext {
 
         singleRestuarntFolder = mainPath + singleRestuarntFolder + File.separator;
 
+        productIdRefrence = mainPath + productIdRefrence;
+
 	}
 	String materialMaintian = "物料维护表.xlsx";
 	String inventoryRecipTransfer="盘点与配方单位转换表.xls";
 	String dishesSaleStatistic="菜品销售统计表";
-	String weeklyInventory="周盘点表PIIT76227001201410.xls";
+	String weeklyInventory="PIIT";//周盘点表PIIT76227001201410.xls
 	String recipe="LS 产品配方及物料对应表.xlsx";
     String resturantMaintain="餐厅信息维护表.xls";
+
+    String productIdRefrence = "产品组ID表.xlsx";
 
     String singleRestuarntFolder="output";
 }
