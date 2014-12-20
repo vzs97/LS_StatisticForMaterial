@@ -95,7 +95,7 @@ public class SingleRestaurantExecutorImpl {
             SingleRestaurantSheet singleRestaurantSheet = new SingleRestaurantSheet();
             singleRestaurantSheet.setSingleRestaurantRowList(singleResturuantRowList);
             singleRestaurantWookbook.setSingleRestaurantSheet(singleRestaurantSheet);
-            inputDao.writeWorkbook(inputContext.getSingleRestuarntFolder(),resturantMaintainRow.getResturantName()+".xls",null,singleRestaurantWookbook);
+            inputDao.writeWorkbook(inputContext.getSingleRestuarntFolder(),resturantMaintainRow.getResturantName()+".xls",inputContext.getSingleResturantTemplate(),singleRestaurantWookbook);
 //            System.out.println(singleResturuantRowList);
 
         }

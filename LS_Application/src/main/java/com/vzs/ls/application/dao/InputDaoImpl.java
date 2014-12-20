@@ -22,6 +22,7 @@ public class InputDaoImpl {
     public <T> void writeWorkbook(String filePath,String fileName,String templatePath,T workkbook){
         BWorkbookUtil.mkdirsIfNotExist(filePath);
         BPoiWriterTemplate<T> bPoiWriterTemplate = new BPoiWriterTemplate(filePath+fileName,workkbook);
+        bPoiWriterTemplate.setTemplatePath(templatePath);
         bPoiWriterTemplate.execute();;
     }
 }

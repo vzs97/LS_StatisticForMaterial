@@ -24,6 +24,7 @@ public class InputContext {
         singleRestuarntFolder = mainPath + singleRestuarntFolder + File.separator;
 
         productIdRefrence = mainPath + productIdRefrence;
+        singleResturantTemplate = mainPath + singleResturantTemplate;
 
 	}
 	String materialMaintian = "物料维护表.xlsx";
@@ -36,4 +37,6 @@ public class InputContext {
     String productIdRefrence = "产品组ID表.xlsx";
 
     String singleRestuarntFolder="output";
+
+    String singleResturantTemplate = "EOWTemplate.xls";
 }
