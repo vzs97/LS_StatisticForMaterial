@@ -1,5 +1,6 @@
 package com.vzs.ls.application.logicExecutor;
 
+import com.vzs.common.util.log.SingleThreadLogUtil;
 import com.vzs.ls.application.input.pojo.DishesSellerStatistic.DishesSellerStatisticRow;
 import com.vzs.ls.application.input.pojo.DishesSellerStatistic.DishesSellerStatisticWorkbook;
 import com.vzs.ls.application.input.pojo.InventoryRecipeTransfer.InventoryRecipeTransferRow;
@@ -58,11 +59,11 @@ public class TheoryCousumptionCall extends SingleRestaurantRowCall {
                 String sunOfGodSystemId = lsRecipeExceptPotRow.getSunOfGodSystemId();
                 DishesSellerStatisticRow dishesSellerStatisticRow = dishesSellerStatisticRowMap.get(sunOfGodSystemId);
                 if(dishesSellerStatisticRow == null){
-                    System.out.println("Can't find 天子星代码" + sunOfGodSystemId);
+                    SingleThreadLogUtil.log("Can't find 天子星代码" + sunOfGodSystemId);
                     continue;
                 }
                 if(recipeCount == null){
-                    System.out.println("can't find 配方克数 for 天子星" + sunOfGodSystemId);
+                    SingleThreadLogUtil.log("can't find 配方克数 for 天子星" + sunOfGodSystemId);
                     continue;
                 }
                 Double sales = dishesSellerStatisticRow.getSales();
