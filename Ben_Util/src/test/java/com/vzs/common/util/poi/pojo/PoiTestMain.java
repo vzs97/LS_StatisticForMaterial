@@ -1,5 +1,6 @@
 package com.vzs.common.util.poi.pojo;
 
+import com.vzs.common.util.log.SingleThreadLogUtil;
 import com.vzs.common.util.poi.reader.BPoiReaderTemplate;
 
 /**
@@ -11,6 +12,6 @@ public class PoiTestMain {
         BPoiReaderTemplate<LSMaterialWorkbook> bPoiReaderTemplate = new BPoiReaderTemplate<LSMaterialWorkbook>(xlsPath,LSMaterialWorkbook.class);
         bPoiReaderTemplate.execute();
         LSMaterialWorkbook lsMaterialWorkbook = bPoiReaderTemplate.getBWorkbook();
-        System.out.println(lsMaterialWorkbook);
+        SingleThreadLogUtil.log(lsMaterialWorkbook);
     }
 }

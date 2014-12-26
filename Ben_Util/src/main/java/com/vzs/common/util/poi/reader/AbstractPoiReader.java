@@ -1,6 +1,7 @@
 package com.vzs.common.util.poi.reader;
 
 import com.google.common.collect.Lists;
+import com.vzs.common.util.log.SingleThreadLogUtil;
 import com.vzs.common.util.poi.pojo.BCell;
 import com.vzs.common.util.poi.pojo.BRow;
 import com.vzs.common.util.poi.pojo.BSheet;
@@ -79,7 +80,7 @@ public abstract class AbstractPoiReader implements PoiReader{
                     return value;
             }
         }catch (Exception e){
-            System.out.println("Can't format cell [" + currentRowNumber +":" + bCell.column() +"]") ;
+            SingleThreadLogUtil.log("Can't format cell [" + currentRowNumber + ":" + bCell.column() + "]") ;
             e.printStackTrace();
         }
         return null;

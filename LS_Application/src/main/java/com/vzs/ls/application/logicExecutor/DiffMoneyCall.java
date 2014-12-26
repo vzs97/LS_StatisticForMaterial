@@ -2,6 +2,7 @@ package com.vzs.ls.application.logicExecutor;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
+import com.vzs.common.util.log.SingleThreadLogUtil;
 import com.vzs.ls.application.input.pojo.ProductIDReference.ProductIDReferenceRow;
 import com.vzs.ls.application.input.pojo.ProductIDReference.ProductIDReferenceWorkbook;
 import com.vzs.ls.application.input.pojo.ResturantMaintain.ResturantMaintainRow;
@@ -30,7 +31,7 @@ public class DiffMoneyCall extends SingleRestaurantRowCall {
         Map<String, WeeklyInventoryWorkbook> resturanNoToWorkbook = singleRestaurantExecutorImpl.getResturanNoToWorkbook();
         WeeklyInventoryWorkbook weeklyInventoryWorkbook = resturanNoToWorkbook.get(resturantMaintainRow.getResturantNo());
         if(weeklyInventoryWorkbook == null){
-            System.out.println("Can't find PIIT for restaurant " + resturantMaintainRow.getResturantNo());
+            SingleThreadLogUtil.log("Can't find PIIT for restaurant " + resturantMaintainRow.getResturantNo());
             return;
         }
         Map<String, WeeklyInventoryRow> materialNoToRow = weeklyInventoryWorkbook.getWeeklyInventorySheet().getMaterialNoToRow();
@@ -40,7 +41,7 @@ public class DiffMoneyCall extends SingleRestaurantRowCall {
 
 
         if(weeklyInventoryRow == null){
-            System.out.println("Can't find PIIT for restaurant  material No " + singleRestaurantRow.getMaterialNo());
+            SingleThreadLogUtil.log("Can't find PIIT for restaurant  material No " + singleRestaurantRow.getMaterialNo());
             return;
         }
 

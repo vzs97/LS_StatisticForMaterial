@@ -1,6 +1,7 @@
 package com.vzs.ls.application.ui.swing;
 
 import com.google.common.base.Stopwatch;
+import com.vzs.common.util.log.SingleThreadLogUtil;
 import com.vzs.ls.application.input.pojo.InputContext;
 import com.vzs.ls.application.ui.CalaulateMain;
 
@@ -46,7 +47,7 @@ public class MainSwing {
         dialog.setSize(200, 100);
         JPanel jp = new JPanel();
         jp.setLayout(new BorderLayout());
-        jp.add(new JLabel(message),BorderLayout.CENTER);
+        jp.add(new JLabel(message), BorderLayout.CENTER);
         jp.add(ok,BorderLayout.SOUTH);
         dialog.getContentPane().add(jp);
         dialog.setLocation(getPoint());
@@ -96,7 +97,7 @@ public class MainSwing {
                 go.setEnabled(true);
                 stopwatch.stop();
                 showHint("Finished within " + stopwatch.elapsed(TimeUnit.MILLISECONDS) + "ms");
-                System.out.println("Used " + stopwatch.elapsed(TimeUnit.MILLISECONDS) + "ms");
+                SingleThreadLogUtil.log("Used " + stopwatch.elapsed(TimeUnit.MILLISECONDS) + "ms");
             }
         });
 

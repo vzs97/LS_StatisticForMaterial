@@ -1,5 +1,6 @@
 package com.vzs.common.util.poi.reader;
 
+import com.vzs.common.util.log.SingleThreadLogUtil;
 import com.vzs.common.util.poi.pojo.BCell;
 import com.vzs.common.util.poi.pojo.BSheet;
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -63,7 +64,7 @@ public class SimpleXLSReader extends AbstractPoiReader{
 					return cell.getRichStringCellValue();
 			}
 		}catch (Exception e){
-			System.out.println("Can't read cell [" + cell.getRowIndex() +":" + cell.getColumnIndex() +"]") ;
+            SingleThreadLogUtil.log("Can't read cell [" + cell.getRowIndex() + ":" + cell.getColumnIndex() + "]") ;
 			e.printStackTrace();
 		}
 

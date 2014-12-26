@@ -18,13 +18,14 @@ public class InputContext {
 		dishesSaleStatistic = mainPath + dishesSaleStatistic;
 		recipe = mainPath+recipe;
         resturantMaintain = mainPath + resturantMaintain;
-		//TODO: need change
+
 		weeklyInventory = mainPath + weeklyInventory;
 
         singleRestuarntFolder = mainPath + singleRestuarntFolder + File.separator;
 
         productIdRefrence = mainPath + productIdRefrence;
         singleResturantTemplate = mainPath + singleResturantTemplate;
+        logFolder = mainPath + logFolder + File.separator;;
 
 	}
 	String materialMaintian = "物料维护表.xlsx";
@@ -39,4 +40,6 @@ public class InputContext {
     String singleRestuarntFolder="output";
 
     String singleResturantTemplate = "EOWTemplate.xls";
+
+    String logFolder = "log";
 }

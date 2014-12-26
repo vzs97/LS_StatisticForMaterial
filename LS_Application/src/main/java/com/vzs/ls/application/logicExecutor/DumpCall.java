@@ -1,5 +1,6 @@
 package com.vzs.ls.application.logicExecutor;
 
+import com.vzs.common.util.log.SingleThreadLogUtil;
 import com.vzs.ls.application.output.pojo.SingleRestaruant.SingleRestaurantRow;
 
 /**
@@ -10,7 +11,7 @@ public class DumpCall extends SingleRestaurantRowCall {
     public void call(SingleRestaurantRow singleRestaurantRow) {
         String materialNo = singleRestaurantRow.getMaterialNo();
         if("8691002Q".equals(singleRestaurantRow.getMaterialNo())){
-            System.out.println();
+            SingleThreadLogUtil.log(null);
         }
     }
 }

@@ -3,7 +3,8 @@ package com.vzs.ls.application.logicExecutor;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
-import com.vzs.ls.application.dao.InputDaoImpl;
+import com.vzs.common.util.dao.BWorkbookDaoImpl;
+import com.vzs.common.util.log.SingleThreadLogUtil;
 import com.vzs.ls.application.input.pojo.DishesSellerStatistic.DishesSellerStatisticWorkbook;
 import com.vzs.ls.application.input.pojo.InputContext;
 import com.vzs.ls.application.input.pojo.InventoryRecipeTransfer.InventoryRecipeTransferRow;
@@ -35,7 +36,7 @@ import java.util.Map;
 @Data
 @NoArgsConstructor
 public class SingleRestaurantExecutorImpl {
-	InputDaoImpl inputDao = new InputDaoImpl();
+    BWorkbookDaoImpl inputDao = new BWorkbookDaoImpl();
 	InputContext inputContext;
 	MaterialMaintainWorkbook materialMaintainWorkbook;
 	InventoryRecipeTransferWorkbook inventoryRecipeTransferWorkbook;
@@ -79,7 +80,7 @@ public class SingleRestaurantExecutorImpl {
             List<SingleRestaurantRow> singleResturuantRowList = materialMaintainTableInit();
             DishesSellerStatisticWorkbook dishesSellerStatisticWorkbook =getResturantNameToWorkbook().get(resturantMaintainRow.getResturantName());
             if(dishesSellerStatisticWorkbook == null){
-                System.out.println("找不到对应的菜品销售表:"+resturantMaintainRow.getResturantName() +":无视该餐厅");
+                SingleThreadLogUtil.log("找不到对应的菜品销售表:" + resturantMaintainRow.getResturantName() + ":无视该餐厅");
                 continue;
             }
             initInventory(resturantMaintainRow,singleResturuantRowList);
@@ -96,7 +97,7 @@ public class SingleRestaurantExecutorImpl {
             singleRestaurantSheet.setSingleRestaurantRowList(singleResturuantRowList);
             singleRestaurantWookbook.setSingleRestaurantSheet(singleRestaurantSheet);
             inputDao.writeWorkbook(inputContext.getSingleRestuarntFolder(),resturantMaintainRow.getResturantName()+".xls",inputContext.getSingleResturantTemplate(),singleRestaurantWookbook);
-//            System.out.println(singleResturuantRowList);
+//            SingleThreadLogUtil.log(singleResturuantRowList);
 
         }
 
@@ -122,7 +123,7 @@ public class SingleRestaurantExecutorImpl {
 			if(inventoryRecipeTransferRow != null){
 				singleRestaurantRow.setInventoryUnit(inventoryRecipeTransferRow.getInventoryUnit());
 			}else{
-                System.out.println("Can't find Inventory Unit for " + materialNo);
+                SingleThreadLogUtil.log("Can't find Inventory Unit for " + materialNo);
             }
 		}
 	}
@@ -184,7 +185,7 @@ public class SingleRestaurantExecutorImpl {
             String fileName = file.getName();
 
             String restruantName = NormalUtil.extractResturantName(fileName);
-//            System.out.println(fileName);
+//            SingleThreadLogUtil.log(fileName);
             DishesSellerStatisticWorkbook dishesSellerStatisticWorkbook = inputDao.getWorkbook(file.getAbsolutePath(),DishesSellerStatisticWorkbook.class);
             dishesSellerStatisticWorkbook.getDishesSellerStatisticSheet().initDishesMap();
             resturantNameToWorkbook.put(restruantName,dishesSellerStatisticWorkbook);
