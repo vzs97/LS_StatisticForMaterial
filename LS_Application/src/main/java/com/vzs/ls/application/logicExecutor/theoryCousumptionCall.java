@@ -46,7 +46,7 @@ public class TheoryCousumptionCall extends SingleRestaurantRowCall {
                 Double saled = dishesSellerStatisticRow.getSales();
                 amount += unit * saled;
             }
-            InventoryRecipeTransferRow inventoryRecipeTransferRow = idToRow.get(materialNo);
+            InventoryRecipeTransferRow inventoryRecipeTransferRow = idToRow.get(singleRestaurantRow.getTempJDECode());
             Double transferUnit = inventoryRecipeTransferRow.getTransferUnit();
             Double theoryUnit=amount/transferUnit;
             singleRestaurantRow.setTheoryCousumption(theoryUnit);
@@ -70,7 +70,7 @@ public class TheoryCousumptionCall extends SingleRestaurantRowCall {
                 amount += recipeCount * sales;
             }
 //            System.out.println(materialNo);
-            InventoryRecipeTransferRow inventoryRecipeTransferRow = idToRow.get(materialNo);
+            InventoryRecipeTransferRow inventoryRecipeTransferRow = idToRow.get(singleRestaurantRow.getTempJDECode());
             if(inventoryRecipeTransferRow == null){
                 return;
             }
@@ -79,6 +79,10 @@ public class TheoryCousumptionCall extends SingleRestaurantRowCall {
             singleRestaurantRow.setTheoryCousumption(theoryUnit);
 
         }
+        //deonmistor  1:find jde code in 产品组ID.xlsx by materila NO,
+        // 2:then find which one exist in PIIT, V columns not null, if more than one , get the value bigger than 0.
+        // 3:then use this jde id to get the transfer in 盘点与配方单位转换表.xlsx
+        //4: if can't find in step2, more than one meet the requirement , insert a a comments
 
     }
 }
