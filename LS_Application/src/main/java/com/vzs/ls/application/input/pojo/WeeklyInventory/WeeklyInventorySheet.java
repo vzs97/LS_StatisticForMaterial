@@ -17,7 +17,7 @@ public class WeeklyInventorySheet {
     Map<String, WeeklyInventoryRow> materialNoToRow = Maps.newHashMap();
     public void initInventoryMap() {
         for(WeeklyInventoryRow row : weeklyInventoryRowList){
-            materialNoToRow.put(row.getMateriaId(),row);
+            materialNoToRow.put(row.getJdeId(),row);
         }
     }
 }

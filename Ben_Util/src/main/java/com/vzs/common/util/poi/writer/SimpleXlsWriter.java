@@ -128,6 +128,24 @@ public class SimpleXlsWriter extends PoiWriter{
         if(cell == null){
             cell = currentRow.createCell(columnIndex);
         }
+
+        if(bCell.types().equals(BCell.TYPES.COMMENTS) ){
+            if(cellInstance != null) {
+                HSSFPatriarch drawingPatriarch = currentSHeet.createDrawingPatriarch();
+                HSSFCreationHelper creationHelper = hssfWorkbook.getCreationHelper();
+                HSSFClientAnchor clientAnchor = creationHelper.createClientAnchor();
+                clientAnchor.setCol1(cell.getColumnIndex());
+                clientAnchor.setCol2(cell.getColumnIndex()+1);
+                clientAnchor.setRow1(cell.getRowIndex());
+                clientAnchor.setRow2(cell.getRowIndex()+3);
+                HSSFComment cellComment = drawingPatriarch.createCellComment(clientAnchor);
+                cellComment.setString(creationHelper.createRichTextString(cellInstance.toString()));
+                cellComment.setAuthor("Ben:");
+                cell.setCellComment(cellComment);
+            }
+            return;
+        }
+
         if(cellInstance instanceof String) {
             cell.setCellValue((String)cellInstance);
         }else if(cellInstance instanceof Date){

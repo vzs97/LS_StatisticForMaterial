@@ -20,4 +20,6 @@ public class InventoryRecipeTransferRow {
 	String inventoryUnit;
 	@BCell(column = "F" , types = BCell.TYPES.NUMERIC , description = "目标值")
 	Double target;
+	@BCell(column = "G" , types = BCell.TYPES.STRING , description = "JDE Code")
+	String jdeCode;
 }

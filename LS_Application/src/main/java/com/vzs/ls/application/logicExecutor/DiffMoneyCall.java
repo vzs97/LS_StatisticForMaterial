@@ -37,11 +37,11 @@ public class DiffMoneyCall extends SingleRestaurantRowCall {
         Map<String, WeeklyInventoryRow> materialNoToRow = weeklyInventoryWorkbook.getWeeklyInventorySheet().getMaterialNoToRow();
 
 
-        WeeklyInventoryRow weeklyInventoryRow = singleRestaurantExecutorImpl.getIfHave(singleRestaurantRow.getMaterialNo(),materialNoToRow);
+        WeeklyInventoryRow weeklyInventoryRow = materialNoToRow.get(singleRestaurantRow.getTempJDECode());
 
 
         if(weeklyInventoryRow == null){
-            SingleThreadLogUtil.log("Can't find PIIT for restaurant  material No " + singleRestaurantRow.getMaterialNo());
+            SingleThreadLogUtil.log("Can't find PIIT for restaurant By Jde Code: " + singleRestaurantRow.getTempJDECode());
             return;
         }
 

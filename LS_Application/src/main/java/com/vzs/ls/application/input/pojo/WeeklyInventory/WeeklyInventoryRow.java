@@ -8,8 +8,8 @@ import lombok.Data;
  */
 @Data
 public class WeeklyInventoryRow {
-	@BCell(column = "C" , types = BCell.TYPES.STRING, isSkipWhenEmpty = true,description = "编号(产品组ID)")
-	String materiaId;
+	@BCell(column = "C" , types = BCell.TYPES.STRING, isSkipWhenEmpty = true,description = "编号(产品组ID), now it is JDE ID(20141227")
+	String jdeId;
 	@BCell(column = "D" , types = BCell.TYPES.STRING, description = "品名")
 	String name;
 	@BCell(column = "E" , types = BCell.TYPES.STRING, description = "单位")

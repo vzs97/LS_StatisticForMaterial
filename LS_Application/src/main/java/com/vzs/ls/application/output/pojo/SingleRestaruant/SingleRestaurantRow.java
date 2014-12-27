@@ -33,4 +33,9 @@ public class SingleRestaurantRow {
 	Double rate;
 	@BCell(column = "J" , types = BCell.TYPES.PERCENT, description = "目标值")
 	Double targetValue;
+
+    String tempJDECode;
+
+    @BCell(column = "D" , types = BCell.TYPES.COMMENTS, description = "if jde conflict, read this")
+    String jdeCodeComments;
 }

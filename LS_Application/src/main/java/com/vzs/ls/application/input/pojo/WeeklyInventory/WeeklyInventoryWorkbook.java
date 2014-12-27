@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @NoArgsConstructor
-@BWorkbook(description = "周盘点表.xls")
+@BWorkbook(description = "周盘点表PIIT.xls")
 public class WeeklyInventoryWorkbook {
 	@BSheet(sheetName = "盘点表",startRow = 6)
 	WeeklyInventorySheet weeklyInventorySheet;

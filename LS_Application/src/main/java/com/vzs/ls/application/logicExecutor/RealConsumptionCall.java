@@ -37,10 +37,10 @@ public class RealConsumptionCall extends SingleRestaurantRowCall{
             return;
         }
 
-        WeeklyInventoryRow weeklyInventoryRow  = singleRestaurantExecutorImpl.getIfHave(singleRestaurantRow.getMaterialNo(),weeklyInventoryWorkbook.getWeeklyInventorySheet().getMaterialNoToRow());
+        WeeklyInventoryRow weeklyInventoryRow  =weeklyInventoryWorkbook.getWeeklyInventorySheet().getMaterialNoToRow().get(singleRestaurantRow.getTempJDECode());
 
         if(weeklyInventoryRow == null){
-            SingleThreadLogUtil.log("Can't find PIIT for restaurant  material No " + singleRestaurantRow.getMaterialNo());
+            SingleThreadLogUtil.log("Can't find PIIT for restaurant By JDE CODE for Real Consumption: " + singleRestaurantRow.getTempJDECode());
             return;
         }
 

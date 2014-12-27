@@ -22,7 +22,7 @@ public class InventoryRecipeTransferWorkbook {
 	Map<String,InventoryRecipeTransferRow> idToRow = Maps.newHashMap();
 	public void init(){
 		for (InventoryRecipeTransferRow inventoryRecipeTransferRow : inventoryRecipeTransferSheet.getInventoryRecipeTransferRowList()) {
-			idToRow.put(inventoryRecipeTransferRow.getMaterialId(),inventoryRecipeTransferRow);
+			idToRow.put(inventoryRecipeTransferRow.getJdeCode(),inventoryRecipeTransferRow);
 		}
 	}
 

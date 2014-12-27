@@ -20,6 +20,6 @@ public @interface BCell {
 	String description() default "";
 
 	public static enum TYPES{
-		STRING,DATE,NUMERIC,INTEGER,BOOLEAN,PERCENT
+		STRING,DATE,NUMERIC,INTEGER,BOOLEAN,PERCENT,COMMENTS
 	}
 }

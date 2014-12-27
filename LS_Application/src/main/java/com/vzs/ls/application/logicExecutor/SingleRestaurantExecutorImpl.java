@@ -22,6 +22,7 @@ import com.vzs.ls.application.output.pojo.SingleRestaruant.SingleRestaurantRow;
 import com.vzs.ls.application.output.pojo.SingleRestaruant.SingleRestaurantSheet;
 import com.vzs.ls.application.output.pojo.SingleRestaruant.SingleRestaurantWookbook;
 import com.vzs.ls.application.utils.NormalUtil;
+import javafx.util.Pair;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import utils.BReflectHelper;
@@ -51,27 +52,64 @@ public class SingleRestaurantExecutorImpl {
 		this.inputContext=inputContext;
 	}
 
-    public <T> T getIfHave(String key,Map<String,T> maps){
-        return getIfHave(key,maps,true);
-    }
-    public <T> T getIfHave(String key,Map<String,T> maps, boolean isDeep){
+//    public <T> List<T> getIfHave(String resturantNo,String key,Map<String,T> maps){
+//        return getIfHave(resturantNo,key,maps,true);
+//    }
+    public <T> Pair<GetIfHaveEnum,List<T>> getIfHave(String resturantNo,String key,Map<String,T> maps, boolean isDeep){
+        List<T> reList = Lists.newArrayList();
         T re = maps.get(key);
         if(re != null){
-            return re;
+            reList.add(re);
+            return new Pair(GetIfHaveEnum.GOOD,reList);
         }else if(!isDeep){
             return null;
         }
-
+        WeeklyInventoryWorkbook weeklyInventoryWorkbook = resturanNoToWorkbook.get(resturantNo);
+        if(weeklyInventoryWorkbook == null){
+            return null;
+        }
+        int moreThan0=0;
+        int equals0=0;
+        int nullValue=0;
+        T moreThan0T = null;
+        T equals0T = null;
         ProductIDReferenceWorkbook productIDReferenceWorkbook = getProductIDReferenceWorkbook();
         Multimap<String, ProductIDReferenceRow> multimap = productIDReferenceWorkbook.getProductIDReferenceSheet().getMultimap();
         for (ProductIDReferenceRow productIDReferenceRow : multimap.get(key)) {
+            WeeklyInventoryRow weeklyInventoryRow = weeklyInventoryWorkbook.getWeeklyInventorySheet().getMaterialNoToRow().get(productIDReferenceRow.getJdeCode());
+            if(weeklyInventoryRow == null){
+                continue;
+            }
             re = maps.get(productIDReferenceRow.getJdeCode());
             if(re != null){
-                return re;
+                Double monthlySale = weeklyInventoryRow.getMonthlySale();
+                if(monthlySale == null){
+                    nullValue++;
+                }else if(monthlySale.equals(0D)){
+                    equals0++;
+                    equals0T = re;
+                }else if(monthlySale > 0D){
+                    moreThan0++;
+                    moreThan0T=re;
+                }
+
+                reList.add(re);
             }
 
         }
-        return null;
+
+        if(moreThan0 == 1){
+            reList.add(0,moreThan0T);
+            return new Pair(GetIfHaveEnum.GOOD,reList);
+        }else if(moreThan0 > 1){
+            return new Pair(GetIfHaveEnum.BAD,reList);
+        }else if(equals0 == 1){
+            reList.add(0,equals0T);
+            return new Pair(GetIfHaveEnum.GOOD,reList);
+        }else if(equals0 > 1){
+            return new Pair(GetIfHaveEnum.BAD,reList);
+        }
+        return  new Pair(GetIfHaveEnum.BAD,reList);
     }
 
 	public void execute(){
@@ -118,12 +156,25 @@ public class SingleRestaurantExecutorImpl {
 		for (SingleRestaurantRow singleRestaurantRow : singleResturuantRowList) {
 			String materialNo = singleRestaurantRow.getMaterialNo();
             Map<String, InventoryRecipeTransferRow> idToRow = inventoryRecipeTransferWorkbook.getIdToRow();
-			InventoryRecipeTransferRow inventoryRecipeTransferRow = getIfHave(materialNo,idToRow);
+            Pair<GetIfHaveEnum, List<InventoryRecipeTransferRow>> ifHave = getIfHave(resturantMaintainRow.getResturantNo(), materialNo, idToRow, true);
+            GetIfHaveEnum key = ifHave.getKey();
+            List<InventoryRecipeTransferRow> value = ifHave.getValue();
 
-			if(inventoryRecipeTransferRow != null){
-				singleRestaurantRow.setInventoryUnit(inventoryRecipeTransferRow.getInventoryUnit());
+
+            if(GetIfHaveEnum.GOOD.equals(key)){
+                InventoryRecipeTransferRow inventoryRecipeTransferRow = value.get(0);
+                singleRestaurantRow.setInventoryUnit(inventoryRecipeTransferRow.getInventoryUnit());
+                singleRestaurantRow.setTempJDECode(inventoryRecipeTransferRow.getJdeCode());
+                singleRestaurantRow.setJdeCodeComments(inventoryRecipeTransferRow.getJdeCode());
 			}else{
-                SingleThreadLogUtil.log("Can't find Inventory Unit for " + materialNo);
+                StringBuilder sb = new StringBuilder();
+                if(!value.isEmpty()){
+                    for (InventoryRecipeTransferRow inventoryRecipeTransferRow : value) {
+                        sb.append(inventoryRecipeTransferRow.getJdeCode()).append(",");
+                    }
+                    singleRestaurantRow.setJdeCodeComments(sb.toString());
+                }
+                SingleThreadLogUtil.log("Can't find Inventory Unit for " + materialNo + " with jdecodes:"+sb.toString());
             }
 		}
 	}
