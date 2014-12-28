@@ -22,7 +22,7 @@ public class NormalUtil {
 
         @Override
         public boolean accept(File file) {
-            if(file.isFile() && (file.getName().endsWith("xls") || file.getName().endsWith("xlsx")) && !file.getName().startsWith("~$")){
+            if(file.isFile() && (file.getName().endsWith("xls") || file.getName().endsWith("xlsx")) && !file.getName().startsWith("~$") &&  !file.getName().startsWith(".")){
                 return true;
             }
             return false;
