@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -44,10 +45,13 @@ public class MainSwing {
             }
         });
         dialog.setTitle("Ben");
-        dialog.setSize(200, 100);
+        dialog.setSize(500, 300);
         JPanel jp = new JPanel();
         jp.setLayout(new BorderLayout());
-        jp.add(new JLabel(message), BorderLayout.CENTER);
+        JTextArea mesgAread = new JTextArea(message);
+        mesgAread.setEnabled(false);
+        mesgAread.setEditable(false);
+        jp.add(mesgAread, BorderLayout.CENTER);
         jp.add(ok,BorderLayout.SOUTH);
         dialog.getContentPane().add(jp);
         dialog.setLocation(getPoint());
@@ -93,10 +97,20 @@ public class MainSwing {
                 if(!directory.endsWith(File.separator)){
                     directory = directory + File.separator;
                 }
-                CalaulateMain.start(new InputContext(directory));
+                InputContext inputContext = new InputContext(directory);
+                java.util.List<String> missingFIleList = inputContext.preValidate();
+                if(missingFIleList.isEmpty()) {
+                    CalaulateMain.start(inputContext);
+                    stopwatch.stop();
+                    showHint("Finished within " + stopwatch.elapsed(TimeUnit.MILLISECONDS) + "ms");
+                }else{
+                    StringBuilder sb = new StringBuilder();
+                    for(String missFile:missingFIleList){
+                        sb.append(missFile).append("\n");
+                    }
+                    showHint("Can't find following files or folder under \""+inputContext.getMainPath()+"\",\n please make sure they are exists\n " + sb.toString());
+                }
                 go.setEnabled(true);
-                stopwatch.stop();
-                showHint("Finished within " + stopwatch.elapsed(TimeUnit.MILLISECONDS) + "ms");
                 SingleThreadLogUtil.log("Used " + stopwatch.elapsed(TimeUnit.MILLISECONDS) + "ms");
             }
         });

@@ -1,9 +1,14 @@
 package com.vzs.ls.application.input.pojo;
 
+import com.google.common.collect.Lists;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import utils.BReflectHelper;
+import utils.FileUtils;
 
 import java.io.File;
+import java.lang.reflect.Field;
+import java.util.List;
 
 /**
  * Created by ben.yao on 12/6/2014.
@@ -42,4 +47,18 @@ public class InputContext {
     String singleResturantTemplate = "EOWTemplate.xls";
 
     String logFolder = "log";
+
+    public List<String> preValidate(){
+        List<String> missingList = Lists.newArrayList();
+        for (Field field : this.getClass().getDeclaredFields()) {
+            Object value = BReflectHelper.getValue(this, field);
+            if(value instanceof String && !(((String) value).equals(logFolder) || ((String)value).equals(singleRestuarntFolder)|| ((String)value).equals(mainPath))){
+                if(!FileUtils.isExists(value.toString())){
+                    missingList.add(value.toString());
+                }
+            }
+        }
+
+        return missingList;
+    }
 }
