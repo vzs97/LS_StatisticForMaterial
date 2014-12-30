@@ -23,6 +23,9 @@ public class TheoryCousumptionCall extends SingleRestaurantRowCall {
     ResturantMaintainRow resturantMaintainRow ;
     @Override
     public void call(SingleRestaurantRow singleRestaurantRow) {
+        if(singleRestaurantRow.getMaterialNo().equals("86910021Q")){
+            System.out.println();
+        }
         Map<String,InventoryRecipeTransferRow> idToRow=singleRestaurantExecutorImpl.getInventoryRecipeTransferWorkbook().getIdToRow();
         String materialNo=singleRestaurantRow.getMaterialNo();
 
