@@ -22,7 +22,6 @@ import com.vzs.ls.application.output.pojo.SingleRestaruant.SingleRestaurantRow;
 import com.vzs.ls.application.output.pojo.SingleRestaruant.SingleRestaurantSheet;
 import com.vzs.ls.application.output.pojo.SingleRestaruant.SingleRestaurantWookbook;
 import com.vzs.ls.application.utils.NormalUtil;
-import javafx.util.Pair;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import utils.BReflectHelper;
@@ -30,6 +29,7 @@ import utils.BReflectHelper;
 import java.io.File;
 import java.util.List;
 import java.util.Map;
+import com.vzs.ls.application.utils.Pair;
 
 /**
  * Created by ben.yao on 12/6/2014.
@@ -115,13 +115,18 @@ public class SingleRestaurantExecutorImpl {
 	public void execute(){
 		init();
         for (ResturantMaintainRow resturantMaintainRow : resturantMaintainWorkbook.getResturantMaintainSheet().getResturantMaintainRowList()) {
+            SingleThreadLogUtil.log("============================ " );
+            SingleThreadLogUtil.log("正在是处理餐厅:" + resturantMaintainRow.getResturantName());
             List<SingleRestaurantRow> singleResturuantRowList = materialMaintainTableInit();
             DishesSellerStatisticWorkbook dishesSellerStatisticWorkbook =getResturantNameToWorkbook().get(resturantMaintainRow.getResturantName());
             if(dishesSellerStatisticWorkbook == null){
                 SingleThreadLogUtil.log("找不到对应的菜品销售表:" + resturantMaintainRow.getResturantName() + ":无视该餐厅");
                 continue;
             }
-            initInventory(resturantMaintainRow,singleResturuantRowList);
+            if(!initInventory(resturantMaintainRow,singleResturuantRowList)){
+                SingleThreadLogUtil.log("找不到对应的 PIIT for " + resturantMaintainRow.getResturantName() +" :skip this one");
+                continue;
+            };
             loopSingleResturantRow(singleResturuantRowList, new TheoryCousumptionCall(this, resturantMaintainRow));
             loopSingleResturantRow(singleResturuantRowList, new RealConsumptionCall(this, resturantMaintainRow));
             loopSingleResturantRow(singleResturuantRowList, new DiffCall());
@@ -152,11 +157,15 @@ public class SingleRestaurantExecutorImpl {
 	 * init Inventory Unit Cell
 	 * @param singleResturuantRowList
 	 */
-	private void initInventory(ResturantMaintainRow resturantMaintainRow,List<SingleRestaurantRow> singleResturuantRowList){
+	private boolean initInventory(ResturantMaintainRow resturantMaintainRow,List<SingleRestaurantRow> singleResturuantRowList){
 		for (SingleRestaurantRow singleRestaurantRow : singleResturuantRowList) {
 			String materialNo = singleRestaurantRow.getMaterialNo();
             Map<String, InventoryRecipeTransferRow> idToRow = inventoryRecipeTransferWorkbook.getIdToRow();
             Pair<GetIfHaveEnum, List<InventoryRecipeTransferRow>> ifHave = getIfHave(resturantMaintainRow.getResturantNo(), materialNo, idToRow, true);
+            if(ifHave == null){
+
+                return false;
+            }
             GetIfHaveEnum key = ifHave.getKey();
             List<InventoryRecipeTransferRow> value = ifHave.getValue();
 
@@ -177,6 +186,7 @@ public class SingleRestaurantExecutorImpl {
                 SingleThreadLogUtil.log("Can't find Inventory Unit for " + materialNo + " with jdecodes:"+sb.toString());
             }
 		}
+        return true;
 	}
 
 	private List<SingleRestaurantRow> materialMaintainTableInit() {
