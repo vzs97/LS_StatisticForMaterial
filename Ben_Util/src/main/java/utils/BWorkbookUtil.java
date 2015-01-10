@@ -12,7 +12,7 @@ public class BWorkbookUtil {
     public static int ToIndex(String columnName)
     {
         columnName = columnName.trim();
-        if(StringUtils.isEmpty(columnName)){
+        if(StringUtils.isEmpty(columnName) || "AUTO".equalsIgnoreCase(columnName)){
             return -1;
         }
         Pattern pattern = Pattern.compile("[A-Z]+");

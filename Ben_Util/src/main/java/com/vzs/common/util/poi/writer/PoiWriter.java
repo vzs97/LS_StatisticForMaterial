@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import utils.BReflectHelper;
 
 import java.lang.reflect.Field;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -17,6 +18,7 @@ public abstract class PoiWriter {
     String filePath;
     String templatePath;
     int currentRowIndex =0;
+    int currentColumn=-1;
 
     public PoiWriter(String filePath, String templatePath) {
         this.filePath = filePath;
@@ -31,17 +33,22 @@ public abstract class PoiWriter {
         for (Field field : sheetInstance.getClass().getDeclaredFields()) {
             BRow brow = field.getAnnotation(BRow.class);
             if(brow != null){
-                //only support one row list in sheet
-                List row = (List)BReflectHelper.getValue(sheetInstance,field);
-                writeRows(row);
-                break;
+                Object rowObj = BReflectHelper.getValue(sheetInstance,field);
+                if(rowObj instanceof Collection) {
+                    Collection row = (Collection) BReflectHelper.getValue(sheetInstance, field);
+                    writeRows(row);
+                }else {
+                    prepareCurrentRow();
+                    writeSingleRow(rowObj);
+                    currentRowIndex++ ;
+                }
             }
         }
 
     }
 
-    protected void writeRows(List rowInstanceList){
-        
+    protected void writeRows(Collection rowInstanceList){
+
         for(Object rowInstance : rowInstanceList){
             prepareCurrentRow();
             writeSingleRow(rowInstance);
@@ -52,16 +59,28 @@ public abstract class PoiWriter {
     protected abstract void prepareCurrentRow();
 
     protected void writeSingleRow(Object rowInstance){
+        currentColumn = 0;
         for (Field field : rowInstance.getClass().getDeclaredFields()) {
             BCell bCell = field.getAnnotation(BCell.class);
             if(bCell != null){
+                Object cellInstance = BReflectHelper.getValue(rowInstance,field);
+                if(cellInstance instanceof Collection){
+                    Collection cells = (Collection)cellInstance;
+                    for(Object cell : cells){
+                        writeCell(rowInstance,cell,field);
+                        currentColumn++;
+                    }
+                }else{
+                    writeCell(rowInstance,cellInstance,field);
+                    currentColumn++;
+                }
 
-                writeCell(rowInstance,field);
+
             }
         }
         
     }
-    protected abstract void writeCell(Object rowInstance, Field field);
+    protected abstract void writeCell(Object rowInstance, Object cellInstance, Field field);
 
     public abstract void writeWorkbook();
 }

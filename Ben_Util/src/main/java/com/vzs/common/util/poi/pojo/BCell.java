@@ -14,6 +14,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 public @interface BCell {
 	String column() default "";
 	int row() default -1;
+    int startColumn() default -1;
 	TYPES types();
 	boolean isStop() default false;
 	boolean isSkipWhenEmpty() default false;

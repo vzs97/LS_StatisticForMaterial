@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @BWorkbook(description = "产品组ID.xls")
 public class ProductIDReferenceWorkbook {
-    @BSheet(sheetIndex = 0,startRow = 6)
+    @BSheet(sheetIndex = 0,startRow = 1)
     ProductIDReferenceSheet productIDReferenceSheet;
 }

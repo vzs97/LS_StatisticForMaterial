@@ -15,4 +15,6 @@ public class SingleRestaurantWookbook {
 	@BSheet(sheetName = "单店报告", startRow = 3)
 	SingleRestaurantSheet singleRestaurantSheet;
 
+    String resturantName;
+
 }

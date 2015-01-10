@@ -19,7 +19,10 @@ public class ProductIDReferenceSheet {
     Multimap<String,ProductIDReferenceRow> multimap = HashMultimap.create();
     public void initRowList(){
         for(ProductIDReferenceRow row: productIDReferenceRowList){
-            multimap.put(row.getMaterId(),row);
+            if("86910034Q".equalsIgnoreCase(row.getMaterId())){
+                System.out.println(row);
+            }
+            multimap.put(row.getMaterId().trim(),row);
         }
     }
 }

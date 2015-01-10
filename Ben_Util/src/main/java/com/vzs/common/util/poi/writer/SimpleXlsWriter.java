@@ -119,11 +119,16 @@ public class SimpleXlsWriter extends PoiWriter{
     }
 
     @Override
-    protected void writeCell(Object rowInstance, Field field) {
-        Object cellInstance = BReflectHelper.getValue(rowInstance,field);
+    protected void writeCell(Object rowInstance, Object cellInstance, Field field) {
+//        Object cellInstance = BReflectHelper.getValue(rowInstance,field);
 
         BCell bCell = field.getAnnotation(BCell.class);
         int columnIndex = BWorkbookUtil.ToIndex(bCell.column());
+        if(columnIndex == -1){
+            columnIndex = currentColumn;
+        }else{
+            currentColumn = columnIndex;
+        }
         HSSFCell cell = currentRow.getCell(columnIndex);
         if(cell == null){
             cell = currentRow.createCell(columnIndex);

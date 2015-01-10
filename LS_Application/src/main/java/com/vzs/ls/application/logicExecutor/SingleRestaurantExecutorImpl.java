@@ -1,5 +1,6 @@
 package com.vzs.ls.application.logicExecutor;
 
+import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
@@ -48,6 +49,8 @@ public class SingleRestaurantExecutorImpl {
 
     ProductIDReferenceWorkbook productIDReferenceWorkbook;
 
+    Multimap<String,SingleRestaurantWookbook> dmToRestuarnts;
+
 	public SingleRestaurantExecutorImpl(InputContext inputContext){
 		this.inputContext=inputContext;
 	}
@@ -56,6 +59,9 @@ public class SingleRestaurantExecutorImpl {
 //        return getIfHave(resturantNo,key,maps,true);
 //    }
     public <T> Pair<GetIfHaveEnum,List<T>> getIfHave(String resturantNo,String key,Map<String,T> maps, boolean isDeep){
+        if("86910034Q".equals(key)){
+            System.out.println();
+        }
         List<T> reList = Lists.newArrayList();
         T re = maps.get(key);
         if(re != null){
@@ -113,6 +119,7 @@ public class SingleRestaurantExecutorImpl {
     }
 
 	public void execute(){
+        dmToRestuarnts = HashMultimap.create();
 		init();
         for (ResturantMaintainRow resturantMaintainRow : resturantMaintainWorkbook.getResturantMaintainSheet().getResturantMaintainRowList()) {
             SingleThreadLogUtil.log("============================ " );
@@ -126,21 +133,25 @@ public class SingleRestaurantExecutorImpl {
             if(!initInventory(resturantMaintainRow,singleResturuantRowList)){
                 SingleThreadLogUtil.log("找不到对应的 PIIT for " + resturantMaintainRow.getResturantName() +" :skip this one");
                 continue;
-            };
+            }
             loopSingleResturantRow(singleResturuantRowList, new TheoryCousumptionCall(this, resturantMaintainRow));
             loopSingleResturantRow(singleResturuantRowList, new RealConsumptionCall(this, resturantMaintainRow));
             loopSingleResturantRow(singleResturuantRowList, new DiffCall());
             loopSingleResturantRow(singleResturuantRowList, new DiffMoneyCall(this, resturantMaintainRow));
-            loopSingleResturantRow(singleResturuantRowList,new GetRateCall());
-            loopSingleResturantRow(singleResturuantRowList,new DumpCall());
+            loopSingleResturantRow(singleResturuantRowList, new GetRateCall());
+            loopSingleResturantRow(singleResturuantRowList, new DumpCall());
 
 
             SingleRestaurantWookbook singleRestaurantWookbook = new SingleRestaurantWookbook();
+            singleRestaurantWookbook.setResturantName(resturantMaintainRow.getResturantName());
+
             SingleRestaurantSheet singleRestaurantSheet = new SingleRestaurantSheet();
             singleRestaurantSheet.setSingleRestaurantRowList(singleResturuantRowList);
             singleRestaurantWookbook.setSingleRestaurantSheet(singleRestaurantSheet);
             inputDao.writeWorkbook(inputContext.getSingleRestuarntFolder(),resturantMaintainRow.getResturantName()+".xls",inputContext.getSingleResturantTemplate(),singleRestaurantWookbook);
 //            SingleThreadLogUtil.log(singleResturuantRowList);
+
+            dmToRestuarnts.put(resturantMaintainRow.getDM(),singleRestaurantWookbook);
 
         }
 
@@ -160,6 +171,9 @@ public class SingleRestaurantExecutorImpl {
 	private boolean initInventory(ResturantMaintainRow resturantMaintainRow,List<SingleRestaurantRow> singleResturuantRowList){
 		for (SingleRestaurantRow singleRestaurantRow : singleResturuantRowList) {
 			String materialNo = singleRestaurantRow.getMaterialNo();
+            if("86910034Q".equals(materialNo)){
+                System.out.println();
+            }
             Map<String, InventoryRecipeTransferRow> idToRow = inventoryRecipeTransferWorkbook.getIdToRow();
             Pair<GetIfHaveEnum, List<InventoryRecipeTransferRow>> ifHave = getIfHave(resturantMaintainRow.getResturantNo(), materialNo, idToRow, true);
             if(ifHave == null){
@@ -174,7 +188,7 @@ public class SingleRestaurantExecutorImpl {
                 InventoryRecipeTransferRow inventoryRecipeTransferRow = value.get(0);
                 singleRestaurantRow.setInventoryUnit(inventoryRecipeTransferRow.getInventoryUnit());
                 singleRestaurantRow.setTempJDECode(inventoryRecipeTransferRow.getJdeCode());
-                singleRestaurantRow.setJdeCodeComments(inventoryRecipeTransferRow.getJdeCode());
+//                singleRestaurantRow.setJdeCodeComments(inventoryRecipeTransferRow.getJdeCode());
 			}else{
                 StringBuilder sb = new StringBuilder();
                 if(!value.isEmpty()){
