@@ -54,8 +54,10 @@ public class DistractExecutorImpl {
                     if(color == null || BColors.RED.equals(color)){
                         isReach=false;
                     }
-                    distractPojo.add(singleRestaurantRow.getMaterialNo(),singleRestaurantRow.getName(),resturantName,singleRestaurantRow.getDiffCount());
+                    distractPojo.add(singleRestaurantRow.getMaterialNo(),singleRestaurantRow.getName(),resturantName,singleRestaurantRow.getDiffCount(),isReach);
                 }
+
+
             }
             convertToWorkbookByDm(dm);
         }
@@ -144,10 +146,22 @@ public class DistractExecutorImpl {
         distractRows.add(row);
 
         //达标率
+        DistractRow rateRow = new DistractRow();
+        rateRow.setName("得率达成%:");
+        List<Double> rateRowList = Lists.newArrayList();
+        Map<String, DistractPojo.ReachRate> reachedRateMaps = distractPojo.getReachedRateMaps();
+        DistractPojo.ReachRate overAll = new DistractPojo.ReachRate();
+        for(String restNo : resturantNames){
+            DistractPojo.ReachRate reachRate = reachedRateMaps.get(restNo);
+            rateRowList.add(reachRate.getReate());
+            overAll.add(reachRate);
+        }
+        rateRow.setResValues(rateRowList);
+        rateRow.setDistractCount(overAll.getReate());
+        distractRows.add(rateRow);
 
 
-
-        inputDao.writeWorkbook(inputContext.getSingleRestuarntFolder(),dm+".xls",null,workbook);
+        inputDao.writeWorkbook(inputContext.getDmFolder(),dm+".xls",null,workbook);
 
         return workbook;
     }

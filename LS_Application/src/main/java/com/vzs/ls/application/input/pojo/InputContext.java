@@ -32,6 +32,8 @@ public class InputContext {
         singleResturantTemplate = mainPath + singleResturantTemplate;
         logFolder = mainPath + logFolder + File.separator;;
 
+        dmFolder = singleRestuarntFolder + dmFolder + File.separator;
+
 	}
 	String materialMaintian = "物料维护表.xlsx";
 	String inventoryRecipTransfer="盘点与配方单位转换表.xls";
@@ -43,6 +45,8 @@ public class InputContext {
     String productIdRefrence = "产品组ID表.xlsx";
 
     String singleRestuarntFolder="output";
+
+    String dmFolder = "dm";
 
     String singleResturantTemplate = "EOWTemplate.xls";
 
