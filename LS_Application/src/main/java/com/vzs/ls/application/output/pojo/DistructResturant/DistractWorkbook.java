@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @BWorkbook
 public class DistractWorkbook {
-    @BSheet(sheetName = "区报告", startRow = 3)
+    @BSheet(sheetName = "报告", startRow = 3)
     DistractSheet distractSheet;
 
 }

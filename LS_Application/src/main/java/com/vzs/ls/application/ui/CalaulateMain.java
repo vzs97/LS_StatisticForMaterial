@@ -5,7 +5,11 @@ import com.vzs.common.util.log.SingleThreadLogUtil;
 import com.vzs.ls.application.distractExecutor.DistractExecutorImpl;
 import com.vzs.ls.application.input.pojo.InputContext;
 import com.vzs.ls.application.logicExecutor.SingleRestaurantExecutorImpl;
+import com.vzs.ls.application.nationExecutor.NationExecutorImpl;
+import com.vzs.ls.application.output.pojo.DistructResturant.DistractPojo;
 import com.vzs.ls.application.output.pojo.SingleRestaruant.SingleRestaurantWookbook;
+
+import java.util.Map;
 
 /**
  * Created by ben.yao on 12/6/2014.
@@ -19,6 +23,10 @@ public class CalaulateMain {
         DistractExecutorImpl distractExecutor = new DistractExecutorImpl(inputContext);
         distractExecutor.setDmToRestuarnts(dmToRestuarnts);
         distractExecutor.execute();
+
+        Map<String, DistractPojo> dmToDP = distractExecutor.getDmToDP();
+        NationExecutorImpl nationExecutor = new NationExecutorImpl(inputContext,dmToDP,distractExecutor.getUniqueMaterialNo());
+        nationExecutor.execute();
 
         SingleThreadLogUtil.getInstance().flush(inputContext.getLogFolder());
     }

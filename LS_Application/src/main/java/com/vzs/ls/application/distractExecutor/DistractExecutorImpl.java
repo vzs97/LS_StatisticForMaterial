@@ -11,6 +11,7 @@ import com.vzs.ls.application.output.pojo.DistructResturant.*;
 import com.vzs.ls.application.output.pojo.SingleRestaruant.RateStyle;
 import com.vzs.ls.application.output.pojo.SingleRestaruant.SingleRestaurantRow;
 import com.vzs.ls.application.output.pojo.SingleRestaruant.SingleRestaurantWookbook;
+import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Collection;
@@ -31,6 +32,13 @@ public class DistractExecutorImpl {
 
     DistractPojo distractPojo;
     Set<String> resturantNames;
+
+
+    @Getter
+    Map<String,String> uniqueMaterialNo = Maps.newHashMap();
+
+    @Getter
+    Map<String,DistractPojo> dmToDP = Maps.newHashMap();
 
     public DistractExecutorImpl(InputContext inputContext){
         this.inputContext = inputContext;
@@ -54,11 +62,14 @@ public class DistractExecutorImpl {
                     if(color == null || BColors.RED.equals(color)){
                         isReach=false;
                     }
+                    uniqueMaterialNo.put(singleRestaurantRow.getMaterialNo(),singleRestaurantRow.getName());
+
                     distractPojo.add(singleRestaurantRow.getMaterialNo(),singleRestaurantRow.getName(),resturantName,singleRestaurantRow.getDiffCount(),isReach);
                 }
 
 
             }
+            dmToDP.put(dm,distractPojo);
             convertToWorkbookByDm(dm);
         }
     }
@@ -146,7 +157,7 @@ public class DistractExecutorImpl {
         distractRows.add(row);
 
         //达标率
-        DistractRow rateRow = new DistractRow();
+        DistractRowPercent rateRow = new DistractRowPercent();
         rateRow.setName("得率达成%:");
         List<Double> rateRowList = Lists.newArrayList();
         Map<String, DistractPojo.ReachRate> reachedRateMaps = distractPojo.getReachedRateMaps();
@@ -158,7 +169,7 @@ public class DistractExecutorImpl {
         }
         rateRow.setResValues(rateRowList);
         rateRow.setDistractCount(overAll.getReate());
-        distractRows.add(rateRow);
+        distractSheet.setDistractRowPercent(rateRow);
 
 
         inputDao.writeWorkbook(inputContext.getDmFolder(),dm+".xls",null,workbook);

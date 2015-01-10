@@ -15,4 +15,6 @@ public class DistractSheet {
     DistractTitleRow distractTitleRow;
     @BRow(clazz = DistractRow.class)
     List<DistractRow> distractRowList;
+    @BRow(clazz = DistractRowPercent.class)
+    DistractRowPercent distractRowPercent;
 }
