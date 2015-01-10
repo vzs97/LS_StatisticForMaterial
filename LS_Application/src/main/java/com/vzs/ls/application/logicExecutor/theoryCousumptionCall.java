@@ -8,6 +8,7 @@ import com.vzs.ls.application.input.pojo.LSRecipe.*;
 import com.vzs.ls.application.input.pojo.ResturantMaintain.ResturantMaintainRow;
 import com.vzs.ls.application.output.pojo.SingleRestaruant.SingleRestaurantRow;
 import lombok.AllArgsConstructor;
+import org.springframework.util.CollectionUtils;
 
 import java.util.Collection;
 import java.util.List;
@@ -23,7 +24,7 @@ public class TheoryCousumptionCall extends SingleRestaurantRowCall {
     ResturantMaintainRow resturantMaintainRow ;
     @Override
     public void call(SingleRestaurantRow singleRestaurantRow) {
-        if(singleRestaurantRow.getMaterialNo().equals("86910021Q")){
+        if(singleRestaurantRow.getMaterialNo().equals("86910649")){
             System.out.println();
         }
         Map<String,InventoryRecipeTransferRow> idToRow=singleRestaurantExecutorImpl.getInventoryRecipeTransferWorkbook().getIdToRow();
@@ -57,6 +58,9 @@ public class TheoryCousumptionCall extends SingleRestaurantRowCall {
             LSRecipeExceptPotSheet exceptPotRecipe = singleRestaurantExecutorImpl.getLsRecipeWorkbook().getExceptPotRecipe();
             Collection<LSRecipeExceptPotRow> lsRecipeExceptPotRows = exceptPotRecipe.getMultimap().get(materialNo);
             Double amount=0D;
+            if(CollectionUtils.isEmpty(lsRecipeExceptPotRows)){
+                SingleThreadLogUtil.log("Can't find " + materialNo + " from 配方表");
+            }
             for (LSRecipeExceptPotRow lsRecipeExceptPotRow : lsRecipeExceptPotRows) {
                 Double recipeCount = lsRecipeExceptPotRow.getRecipeCount();
                 String sunOfGodSystemId = lsRecipeExceptPotRow.getSunOfGodSystemId();
