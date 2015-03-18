@@ -102,6 +102,11 @@ public class SimpleXlsWriter extends PoiWriter{
                 style.setDataFormat(HSSFDataFormat.getBuiltinFormat("0.00%"));
             }
 
+            //need re-write for now if number we just keep two digitial
+            if(BCell.TYPES.NUMERIC.equals(types)) {
+                style.setDataFormat(HSSFDataFormat.getBuiltinFormat("0.00"));
+            }
+
             styleCache.put(styleKey,style);
         }
 

@@ -16,6 +16,7 @@ import java.util.List;
 @Data
 public class InputContext {
 	String mainPath;
+    boolean isWeekly = true;
 	public InputContext(String mainPath){
 		this.mainPath=mainPath;
 		materialMaintian = mainPath + materialMaintian;

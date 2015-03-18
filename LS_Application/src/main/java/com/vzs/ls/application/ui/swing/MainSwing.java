@@ -85,6 +85,7 @@ public class MainSwing {
         });
 
 
+        final JCheckBox isWeek = new JCheckBox("Is Weekly");
 
         final JButton go = new JButton("GO");
         go.addActionListener(new ActionListener() {
@@ -98,6 +99,7 @@ public class MainSwing {
                     directory = directory + File.separator;
                 }
                 InputContext inputContext = new InputContext(directory);
+                inputContext.setWeekly(isWeek.isSelected());
                 java.util.List<String> missingFIleList = inputContext.preValidate();
                 if(missingFIleList.isEmpty()) {
                     CalaulateMain.start(inputContext);
@@ -117,12 +119,14 @@ public class MainSwing {
 
         jPanel.add(folder);
         jPanel.add(chooseFolder);
+        jPanel.add(isWeek);
         jPanel.add(go);
 
         jFrame.getContentPane().add(jPanel);
         jFrame.setVisible(true);
         jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
+
 
 
     public static void main(String...args){

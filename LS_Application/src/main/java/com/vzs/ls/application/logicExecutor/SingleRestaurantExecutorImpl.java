@@ -206,12 +206,17 @@ public class SingleRestaurantExecutorImpl {
         return true;
 	}
 
+    private boolean isNeedShow(MaterialRow materialRow) {
+        boolean isWeekly = inputContext.isWeekly();
+        return (isWeekly && materialRow.isReviewByWeek()) || (!isWeekly && materialRow.isReviewByMonth());
+
+    }
+
 	private List<SingleRestaurantRow> materialMaintainTableInit() {
 		List<SingleRestaurantRow> singleRestuarntRowList = Lists.newArrayList();
 		//init materialTable to single restaurant
 		for (MaterialRow materialRow : materialMaintainWorkbook.getMaterialSheet().getLsMaterialRowList()) {
-			boolean isReviewByWeek = materialRow.isReviewByWeek();
-			if(isReviewByWeek){
+			if(isNeedShow(materialRow)){
 				SingleRestaurantRow row = BReflectHelper.newInstance(SingleRestaurantRow.class);
 				row.setClassification(materialRow.getClassification());
 				row.setMaterialNo(materialRow.getProductSeriesId());
