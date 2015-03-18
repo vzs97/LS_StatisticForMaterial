@@ -13,6 +13,6 @@ public class RateStyle extends BStyleAbstract {
         if(rate == null || tartget == null){
             return null;
         }
-        return (rate < tartget) || rate > 1 ? BColors.RED:null;
+        return (rate < tartget) || rate > 1 ? BColors.RED : BColors.NONE;
     }
 }

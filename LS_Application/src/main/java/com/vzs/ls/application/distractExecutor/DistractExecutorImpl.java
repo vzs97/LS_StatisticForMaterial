@@ -58,9 +58,11 @@ public class DistractExecutorImpl {
                 RateStyle rateStyle = new RateStyle();
                 for (SingleRestaurantRow singleRestaurantRow : singleRestaurantWookbook.getSingleRestaurantSheet().getSingleRestaurantRowList()) {
                     BColors color = rateStyle.getColor(singleRestaurantRow.getRate(), singleRestaurantRow.getTargetValue());
-                    boolean isReach=true;
-                    if(color == null || BColors.RED.equals(color)){
+                    Boolean isReach = null;
+                    if(BColors.RED.equals(color)){
                         isReach=false;
+                    } else if(BColors.NONE.equals(color)) {
+                        isReach = true;
                     }
                     uniqueMaterialNo.put(singleRestaurantRow.getMaterialNo(),singleRestaurantRow.getName());
 

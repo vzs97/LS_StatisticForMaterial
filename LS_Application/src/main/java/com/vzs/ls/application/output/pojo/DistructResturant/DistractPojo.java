@@ -59,7 +59,7 @@ public class DistractPojo {
     Map<String, Double> materialNoToSum = Maps.newHashMap();
 
 
-    public void add(String materalNo,String name,String restuantName,Double diffSum, boolean isReach){
+    public void add(String materalNo,String name,String restuantName,Double diffSum, Boolean isReach){
 
         //for rachRate
         ReachRate reachRate = reachedRateMaps.get(restuantName);
@@ -67,7 +67,9 @@ public class DistractPojo {
             reachRate = new ReachRate();
             reachedRateMaps.put(restuantName,reachRate);
         }
-        reachRate.add(isReach);
+        if(null != isReach) {
+            reachRate.add(isReach);
+        }
 
 
         DistractPojoRow distractPojoRow = materialNoMaps.get(materalNo);
