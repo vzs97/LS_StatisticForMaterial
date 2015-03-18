@@ -124,6 +124,9 @@ public class SingleRestaurantExecutorImpl {
         for (ResturantMaintainRow resturantMaintainRow : resturantMaintainWorkbook.getResturantMaintainSheet().getResturantMaintainRowList()) {
             SingleThreadLogUtil.log("============================ " );
             SingleThreadLogUtil.log("正在是处理餐厅:" + resturantMaintainRow.getResturantName());
+            if(resturantMaintainRow.getResturantName().contains("南丹")) {
+                System.out.println();
+            }
             List<SingleRestaurantRow> singleResturuantRowList = materialMaintainTableInit();
             DishesSellerStatisticWorkbook dishesSellerStatisticWorkbook =getResturantNameToWorkbook().get(resturantMaintainRow.getResturantName());
             if(dishesSellerStatisticWorkbook == null){
@@ -131,7 +134,7 @@ public class SingleRestaurantExecutorImpl {
                 continue;
             }
             if(!initInventory(resturantMaintainRow,singleResturuantRowList)){
-                SingleThreadLogUtil.log("找不到对应的 PIIT for " + resturantMaintainRow.getResturantName() +" :skip this one");
+                SingleThreadLogUtil.log("找不到对应的 PIIT for " + resturantMaintainRow.getResturantName() +" :无视该餐厅");
                 continue;
             }
             loopSingleResturantRow(singleResturuantRowList, new TheoryCousumptionCall(this, resturantMaintainRow));
@@ -171,7 +174,7 @@ public class SingleRestaurantExecutorImpl {
 	private boolean initInventory(ResturantMaintainRow resturantMaintainRow,List<SingleRestaurantRow> singleResturuantRowList){
 		for (SingleRestaurantRow singleRestaurantRow : singleResturuantRowList) {
 			String materialNo = singleRestaurantRow.getMaterialNo();
-            if("86910034Q".equals(materialNo)){
+            if("8691005Q".equals(materialNo)){
                 System.out.println();
             }
             Map<String, InventoryRecipeTransferRow> idToRow = inventoryRecipeTransferWorkbook.getIdToRow();
